@@ -1,17 +1,9 @@
 /**
- * StoryHero — the birthday moment, and the strongest first impression
- * on the page.
+ * StoryHero — the keepsake opening.
  *
- * No button here. The evening has already been opened by the intro's
- * ritual, so this screen just welcomes her — and it's alive: the whole
- * composition leans and drifts toward the cursor in parallax, the
- * letters of her name shy away one by one when she moves over them,
- * sparkles glint, flowers sway, and petals fall from nowhere in
- * particular. Everything is a response; nothing is a click target.
- *
- * Composition is deliberately left-weighted rather than centred — the
- * rest of the story is centred often enough, and this beat reads far
- * better anchored to the margin.
+ * Art direction: "keepsake book" — warm paper, ink, and pressed flowers.
+ * The composition leans with pointer parallax, individual letters of POTTI
+ * react on hover, and the scroll cue invites her to "Turn the page ↓".
  */
 import { useRef, useState } from "react";
 import {
@@ -28,9 +20,9 @@ import AnimatedText from "../ui/AnimatedText";
 import Petals from "../ui/Petals";
 import Flowers from "../ui/Flowers";
 import FloatingHearts from "../ui/FloatingHearts";
+import Deckle from "../ui/Deckle";
 
 interface StoryHeroProps {
-  /** Bumped by the finale to put the seal back and replay the reveal. */
   replayToken?: number;
 }
 
@@ -42,22 +34,17 @@ export default function StoryHero({ replayToken = 0 }: StoryHeroProps) {
 
   const stageRef = useRef<HTMLDivElement>(null);
 
-  // Pointer position over the stage, normalised to -1..1 on each axis.
+  // Pointer position over stage, normalised to -1..1
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const mxSpring = useSpring(mx, { stiffness: 70, damping: 18 });
   const mySpring = useSpring(my, { stiffness: 70, damping: 18 });
 
-  // Parallax drift for the layers — the name travels farthest, the
-  // flowers a step behind, the light the least, like depth in a room.
-  const nameX = useTransform(mxSpring, [-1, 1], [-18, 18]);
-  const nameY = useTransform(mySpring, [-1, 1], [-12, 12]);
+  const nameX = useTransform(mxSpring, [-1, 1], [-16, 16]);
+  const nameY = useTransform(mySpring, [-1, 1], [-10, 10]);
   const flowerX = useTransform(mxSpring, [-1, 1], [-8, 8]);
-  const lightX = useTransform(mxSpring, [-1, 1], [-20, 20]);
+  const lightX = useTransform(mxSpring, [-1, 1], [-18, 18]);
 
-  // Resetting state when a prop changes belongs in render, not in an
-  // effect — this way there is never a frame with the old reveal and
-  // the new token.
   if (seenToken !== replayToken) {
     setSeenToken(replayToken);
   }
@@ -77,25 +64,33 @@ export default function StoryHero({ replayToken = 0 }: StoryHeroProps) {
       aria-labelledby="hero-title"
       data-tone="light"
       onPointerMove={onStageMove}
-      className="relative isolate flex min-h-[100svh] flex-col justify-between overflow-clip bg-porcelain pt-16 pb-10"
+      className="relative isolate flex min-h-[100svh] flex-col justify-between overflow-clip bg-porcelain pt-16 pb-12"
     >
-      {/* ── Light sources, drifting with the pointer ── */}
+      {/* ── Warm ambient lights ── */}
       <motion.div
         aria-hidden="true"
         data-decorative="true"
-        className="aura -top-[10rem] -left-[12rem] h-[30rem] w-[30rem] sm:h-[44rem] sm:w-[44rem]"
-        style={{ x: lightX, background: "radial-gradient(circle, rgba(232,204,211,0.55) 0%, rgba(232,204,211,0) 70%)" }}
+        className="aura -top-[8rem] -left-[10rem] h-[30rem] w-[30rem] sm:h-[44rem] sm:w-[44rem]"
+        style={{
+          x: lightX,
+          background:
+            "radial-gradient(circle, rgba(232,204,211,0.5) 0%, rgba(232,204,211,0) 70%)",
+        }}
       />
       <motion.div
         aria-hidden="true"
         data-decorative="true"
-        className="aura -right-[14rem] bottom-[-12rem] h-[26rem] w-[26rem] sm:h-[36rem] sm:w-[36rem]"
-        style={{ x: flowerX, background: "radial-gradient(circle, rgba(169,138,86,0.16) 0%, rgba(169,138,86,0) 70%)" }}
+        className="aura -right-[12rem] bottom-[-10rem] h-[26rem] w-[26rem] sm:h-[36rem] sm:w-[36rem]"
+        style={{
+          x: flowerX,
+          background:
+            "radial-gradient(circle, rgba(169,138,86,0.15) 0%, rgba(169,138,86,0) 70%)",
+        }}
       />
-      <FloatingHearts count={16} density={0.7} />
-      <Petals active mode="fall" count={10} duration={16000} />
+      <FloatingHearts count={14} density={0.7} />
+      <Petals active mode="fall" count={12} duration={16000} />
 
-      {/* ── Top rule ── */}
+      {/* ── Top Colophon & Hand-drawn Double Rule ── */}
       <motion.div
         className="shell relative z-10 flex items-center justify-between gap-4"
         initial={{ opacity: 0 }}
@@ -103,10 +98,10 @@ export default function StoryHero({ replayToken = 0 }: StoryHeroProps) {
         transition={{ duration: 1, delay: 0.2 }}
       >
         <p className="eyebrow text-rose">{config.hero.eyebrow}</p>
-        <motion.p className="eyebrow text-right text-ink-text/50">{config.herName}</motion.p>
+        <p className="eyebrow text-right text-ink-text/50">For {config.herName}</p>
       </motion.div>
 
-      {/* ── Main ── */}
+      {/* ── Main Stage ── */}
       <div ref={stageRef} className="shell relative z-10 flex flex-1 flex-col justify-center py-12">
         <AnimatePresence mode="wait">
           <motion.div
@@ -117,38 +112,40 @@ export default function StoryHero({ replayToken = 0 }: StoryHeroProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <motion.p
-              className="eyebrow mb-5 text-rose"
-              initial={{ opacity: 0, y: reduced ? 0 : 10 }}
+            {/* Pressed-flower motif stamp badge */}
+            <motion.div
+              className="mb-4 flex items-center gap-2.5 rounded-full border border-rose/25 bg-porcelain/80 px-3.5 py-1 backdrop-blur-sm"
+              initial={{ opacity: 0, y: reduced ? 0 : 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
             >
-              {config.hero.eyebrow}
-            </motion.p>
+              <span className="text-rose">❦</span>
+              <span className="eyebrow text-rose-deep">{config.hero.eyebrow}</span>
+            </motion.div>
 
             <motion.h2
               id="hero-title"
-              className="font-display text-[clamp(2.4rem,1.3rem+5.2vw,5.5rem)] leading-[0.98] text-ink-text"
+              className="font-display text-[clamp(2.5rem,1.4rem+5.4vw,5.8rem)] leading-[0.98] text-ink-text"
               style={{ x: nameX, y: nameY }}
             >
-              <span className="block font-light text-ink-text/45 italic">
+              <span className="block font-light text-ink-text/50 italic">
                 <AnimatedText
                   text={config.finale.title.replace(",", "")}
                   delay={0.2}
                   stagger={0.03}
                 />
               </span>
-              {/* Letters that lean away from the cursor, one at a time. */}
+              {/* Letters that hover-tilt */}
               <span className="mt-1 flex text-rose-deep sm:mt-2" style={{ perspective: 420 }}>
                 {config.herName.toUpperCase().split("").map((letter, index) => (
                   <motion.span
                     key={`${letter}-${index}`}
-                    className="inline-block cursor-default select-none"
+                    className="inline-block cursor-default select-none transition-colors duration-300 hover:text-brass"
                     initial={{ opacity: 0, y: reduced ? 0 : 26, rotateZ: reduced ? 0 : -6 }}
                     animate={{ opacity: 1, y: 0, rotateZ: 0 }}
-                    transition={{ duration: 0.9, delay: 0.55 + index * 0.06, ease: EASE }}
-                    whileHover={reduced ? undefined : { y: -10, rotateZ: 8, scale: 1.12 }}
-                    whileTap={reduced ? undefined : { scale: 0.9 }}
+                    transition={{ duration: 0.9, delay: 0.5 + index * 0.06, ease: EASE }}
+                    whileHover={reduced ? undefined : { y: -10, rotateZ: 8, scale: 1.14 }}
+                    whileTap={reduced ? undefined : { scale: 0.92 }}
                   >
                     {letter}
                   </motion.span>
@@ -156,40 +153,49 @@ export default function StoryHero({ replayToken = 0 }: StoryHeroProps) {
               </span>
             </motion.h2>
 
-            <motion.div
-              className="mt-8 h-px w-full max-w-md origin-left bg-ink-text/15"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 1.1, delay: 1.2, ease: EASE }}
-            />
+            {/* Hand-drawn double rule */}
+            <div className="mt-8 w-full max-w-md space-y-1">
+              <motion.div
+                className="h-px w-full origin-left bg-ink-text/20"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 1.1, delay: 1.0, ease: EASE }}
+              />
+              <motion.div
+                className="h-px w-3/4 origin-left bg-rose/30"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 1.1, delay: 1.15, ease: EASE }}
+              />
+            </div>
 
             <motion.p
-              className="mt-7 max-w-md text-[0.975rem] leading-relaxed text-pretty text-muted sm:text-base"
+              className="mt-7 max-w-lg text-[0.975rem] leading-relaxed text-pretty text-muted sm:text-base"
               initial={{ opacity: 0, y: reduced ? 0 : 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 1.35 }}
+              transition={{ duration: 0.9, delay: 1.3 }}
             >
               {config.hero.subtitle}
             </motion.p>
           </motion.div>
         </AnimatePresence>
 
-        {/* Flowers tucked into the stage — none of them a button. */}
+        {/* Pressed botanical flowers in corners */}
         <motion.div style={{ x: flowerX }} aria-hidden="true">
-          <Flowers variant="cluster" className="-right-6 -bottom-12 w-48 opacity-55 sm:-right-2 sm:w-60" />
-          <Flowers variant="rose" className="-left-10 bottom-0 w-36 opacity-45 sm:-left-6 sm:w-44" />
+          <Flowers variant="cluster" className="-right-6 -bottom-10 w-48 opacity-60 sm:-right-2 sm:w-64" />
+          <Flowers variant="rose" className="-left-10 bottom-0 w-36 opacity-45 sm:-left-6 sm:w-48" />
         </motion.div>
 
-        {/* A few warm glints over the name. */}
+        {/* Ambient sparkles */}
         <Sparkles />
       </div>
 
-      {/* ── Colophon + scroll cue ── */}
+      {/* ── Footer colophon & scroll cue ── */}
       <motion.div
         className="shell relative z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.6 }}
+        transition={{ duration: 1, delay: 1.5 }}
       >
         <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-ink-text/10 pt-5">
           <span className="text-[0.6875rem] tracking-[0.2em] text-muted-light uppercase">
@@ -208,28 +214,21 @@ export default function StoryHero({ replayToken = 0 }: StoryHeroProps) {
           </p>
         </div>
       </motion.div>
+
+      {/* Deckled edge transition to next section */}
+      <Deckle position="bottom" fillColor="var(--color-porcelain)" />
     </section>
   );
 }
 
-/**
- * Glint positions are generated once per module load, not per render —
- * a random layout that reshuffles on every re-render would make the
- * sparkles flicker in place instead of holding still.
- */
-const glints = Array.from({ length: 7 }, () => ({
-  left: 22 + Math.random() * 56,
-  top: 8 + Math.random() * 40,
-  size: 6 + Math.random() * 8,
-  delay: Math.random() * 5,
-  duration: 3.2 + Math.random() * 3.4,
+const glints = Array.from({ length: 8 }, () => ({
+  left: 20 + Math.random() * 60,
+  top: 6 + Math.random() * 45,
+  size: 7 + Math.random() * 9,
+  delay: Math.random() * 4.5,
+  duration: 3 + Math.random() * 3,
 }));
 
-/**
- * A few four-point glints scattered near the heading, each twinkling
- * on its own slow cycle. Decorative and inert — this page no longer
- * asks her to click anything up here.
- */
 function Sparkles() {
   const reduced = useReducedMotion();
 
@@ -243,15 +242,15 @@ function Sparkles() {
           style={{ left: `${glint.left}%`, top: `${glint.top}%`, width: glint.size, height: glint.size }}
           fill="none"
           initial={{ opacity: 0 }}
-          animate={reduced ? { opacity: 0.3 } : { opacity: [0, 0.75, 0] }}
+          animate={reduced ? { opacity: 0.3 } : { opacity: [0, 0.8, 0] }}
           transition={{ duration: glint.duration, repeat: Infinity, delay: glint.delay, ease: "easeInOut" }}
         >
           <path
             d="M12 3v18M3 12h18"
             stroke="var(--color-brass)"
-            strokeWidth="1.4"
+            strokeWidth="1.5"
             strokeLinecap="round"
-            opacity="0.7"
+            opacity="0.75"
           />
         </motion.svg>
       ))}

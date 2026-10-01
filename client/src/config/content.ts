@@ -1,34 +1,21 @@
 /**
  * ═══════════════════════════════════════════════════════════════
- *  BIRTHDAY EXPERIENCE — CONTENT
+ *  BIRTHDAY KEEPSAKE BOOK — CONTENT
  * ═══════════════════════════════════════════════════════════════
  *
  * This is the single source of truth for everything personal.
- * Every name, photo path, memory, trait and line of the letter lives
+ * Every name, photo path, quote, wish line and letter paragraph lives
  * here. Nothing in the UI hard-codes content, so this file is the
- * only thing you need to edit to make the experience yours.
+ * only thing you need to edit to customize the entire experience.
  *
  * ── Editing notes ───────────────────────────────────────────
- *  · herName / nickname    → who this is for
- *  · photos                → drop real images into
- *                            `client/public/photos/` using the exact
- *                            filenames below. Until then each frame
- *                            renders an elegant, clearly-labelled
- *                            placeholder that names the file, so you
- *                            always know which slot is still empty.
- *  · music.src             → optional. Point it at an mp3 to play
- *                            your song. Leave it null and the site
- *                            plays a soft generated ambient pad
- *                            instead. Either way, nothing ever
- *                            autoplays.
+ *  · herName / nickname    → who this is for ("Potti")
+ *  · timelineMoments       → drop real images into `client/public/photos/`
+ *                            using the exact filenames below. Until then,
+ *                            each frame renders an elegant placeholder.
+ *  · quotes & lines        → change any quotes/lines to your own words.
+ *  · letter                → the handwritten letter inside the envelope.
  */
-
-export interface Memory {
-  image: string;
-  caption: string;
-  date: string;
-  tag: string;
-}
 
 export interface TimelineMoment {
   date: string;
@@ -38,296 +25,158 @@ export interface TimelineMoment {
   tag: string;
 }
 
-export interface Trait {
-  title: string;
-  desc: string;
-  badge: string;
-}
-
-export interface YearAheadWish {
-  icon: string;
-  title: string;
-  description: string;
-}
-
 export const config = {
-  /** Her name — the most important value in this file. */
+  /** Her name — prominently displayed throughout the keepsake. */
   herName: "Potti",
 
-  /** Nickname or pet name, if you have one. */
+  /** Nickname or pet name. */
   nickname: "Potti",
 
-  /** The song. Optional — a real file, or the generated ambient pad. */
-  music: {
-    /** Shown on the toggle. */
-    label: "Play our song",
-    /** e.g. "/audio/our-song.mp3" — leave null for the ambient pad. */
-    src: null as string | null,
-  },
-
   // ─────────────────────────────────────────────
-  // THE OPENING — the moment before the story starts
+  // THE CURTAIN & ARRIVAL
   // ─────────────────────────────────────────────
   intro: {
-    firstLine: "Hey, you…",
-    secondLine: "I made something for you.",
-    aside:
-      "It took a while. There's a whole evening in here — and one thing at the end I almost didn't write.",
-    prompt: "Before you continue — promise me you'll stay till the end.",
-    cta: "Begin the surprise",
-    /** Shown while the first photos and fonts warm up. */
-    preparing: "Getting everything ready",
+    firstLine: "Hey, Potti…",
+    secondLine: "A handmade keepsake, bound just for you.",
+    prompt: "Drag up to open the curtain",
+    dragHint: "Pull up to open",
+    keyboardPrompt: "Press Space, Enter, or ↑ to open",
+    /** Rotating honest status captions while fonts and assets warm up */
+    loadingCues: [
+      "Setting the table…",
+      "Choosing the right words…",
+      "Pressing flowers into pages…",
+      "Lighting the candles…",
+    ],
   },
 
   // ─────────────────────────────────────────────
-  // THE HERO — the birthday moment
+  // THE HERO — Keepsake opening
   // ─────────────────────────────────────────────
   hero: {
-    eyebrow: "A birthday, made by hand",
+    eyebrow: "A birthday keepsake, bound by hand",
     subtitle:
-      "A tribute to the smartest, kindest, and most extraordinary woman I know. Move your cursor — the whole page leans in to meet you.",
-    scrollCue: "Scroll, slowly",
+      "A tribute to the smartest, kindest, and most extraordinary soul. Move across the page — every detail leans in to celebrate you.",
+    scrollCue: "Turn the page ↓",
   },
 
   // ─────────────────────────────────────────────
-  // REASONS — what makes her, her
-  // ─────────────────────────────────────────────
-  reasons: {
-    eyebrow: "Things that make you, you",
-    title: "Eight reasons I keep\ncoming back to this list.",
-    lede: "Tap any of them. There's no wrong order.",
-    counterLabel: "reason",
-  },
-
-  // ─────────────────────────────────────────────
-  // THE GALLERY — the photos
+  // THE GALLERY — The visual star of the middle
   // ─────────────────────────────────────────────
   gallery: {
-    eyebrow: "In every frame,",
-    title: "A few of my favourites.",
-    lede: "Half of them are slightly out of focus. Those are my favourites.",
-    hint: "Tap any photo to see it properly",
+    eyebrow: "Captured in time",
+    title: "Pages from our favourite days.",
+    lede: "Every photograph is a pressed leaf between the pages — a doorway back to moments I never want to forget.",
+    hint: "Tap any photograph to inspect the print",
     /**
-     * A handful of nice quotes, shown beneath the photographs. Each
-     * renders on its own line. Make them yours.
+     * Three warm, timeless quotes displayed beneath the photo prints.
      */
     quotes: [
-      "I love you not only for what you are, but for what I am when I am with you.",
-      "There is no remedy for love, but to love more.",
-      "You are my today and all of my tomorrows.",
+      "In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine.",
+      "The best thing to hold onto in life is each other.",
+      "You make every ordinary moment feel like poetry.",
     ],
-    /** A few quiet personal lines right under the quotes. */
+    /**
+     * Two quiet, heartfelt lines beneath the quotes.
+     */
     lines: [
-      "Whenever I look at any of these photographs, I smile before I even remember why.",
-      "Thirty years from now, blurry or not — these will still be the days I'd relive.",
+      "Looking at these memories, I am reminded that the sweetest times are simply the ones spent in your presence.",
+      "Decades from now, through every season and twist of fate, these will forever be the days I hold closest to my heart.",
     ],
-    /** The signed line underneath it all. */
-    signoff: "— yours, today and always",
+    /** Signoff beneath the photo collection. */
+    signoff: "— with all my love, today and every day after",
     closeLabel: "Close",
     prevLabel: "Previous photo",
     nextLabel: "Next photo",
   },
 
   // ─────────────────────────────────────────────
-  // THE WISH — the interactive ritual
+  // THE WISH — The candlelit ritual
   // ─────────────────────────────────────────────
   wish: {
-    eyebrow: "Make a wish",
-    title: "Close your eyes.\nBlow out the candles.",
-    lede: "Hold the button. Don't say it out loud.",
-    holdLabel: "Hold to make a wish",
-    holdingLabel: "Keep holding…",
-    blown: "Wish received.",
+    eyebrow: "A ritual for the year ahead",
+    title: "Make a wish.\nBlow out the candles.",
+    lede: "Hold the flame until the circle closes — or blow out each candle one by one.",
+    holdLabel: "Hold to send your wish",
+    holdingLabel: "Holding your wish…",
+    blown: "May every quiet wish come true.",
     blownBody:
-      "It's out of your hands now. Everything you quietly wanted this year — I'm hoping all of it comes true.",
+      "Your wish is out in the stars now. May this upcoming year bring you boundless happiness, peace of mind, unshakeable confidence, and all the quiet dreams you keep in your heart.",
     again: "Light them again",
   },
 
   // ─────────────────────────────────────────────
-  // THE YEAR AHEAD
-  // ─────────────────────────────────────────────
-  yearAheadSection: {
-    eyebrow: "The next chapter",
-    title: "Here's to the year ahead.",
-    lede: "Four things I'm rooting for, loudly.",
-  },
-
-  // ─────────────────────────────────────────────
-  // THE LETTER
+  // THE LETTER — The envelope & handwritten note
   // ─────────────────────────────────────────────
   letterSection: {
-    eyebrow: "Okay — one last thing.",
-    title: "I wrote you a letter.",
-    lede: "I kept it short, and then rewrote it three times.",
+    eyebrow: "Words kept in ink",
+    title: "A letter for your birthday.",
+    lede: "Folded carefully, sealed with wax, and written solely for you.",
     sealedFor: "For",
-    openLabel: "Open the envelope",
-    reseal: "Fold it back up",
+    openLabel: "Break the seal & unfold",
+    reseal: "Fold the letter back up",
+  },
+
+  letter: {
+    salutation: "Dearest Potti,",
+    bodyParagraphs: [
+      "Another year wiser, bolder, and more luminous. Taking a moment to look back at everything you are and everything you have navigated this past year fills me with immense admiration.",
+      "You possess a rare brilliance — a sharp, curious intellect paired with a genuinely kind, empathetic heart. Whether you are tackling ambitious challenges or sharing late-night laughter, your presence brings warmth, clarity, and infectious energy to everyone around you.",
+      "As you turn this page and step into your next chapter, my wish for you is boundless joy. I hope this year rewards your hard work, surrounds you with deep peace, and brings you adventures that make your soul smile.",
+      "I am deeply proud of who you are, tremendously lucky to know you, and always standing in your corner cheering you on through every triumph.",
+    ],
+    signoff: "Always cheering for you & holding you dear,",
+    signature: "With all my love & respect",
   },
 
   // ─────────────────────────────────────────────
-  // THE CAPSULE — her turn to write
-  // ─────────────────────────────────────────────
-  capsule: {
-    eyebrow: "Your turn",
-    title: "Write to yourself.",
-    lede: "Say it now, read it next year. It'll mean more than you expect.",
-  },
-
-  // ─────────────────────────────────────────────
-  // THE SECRET NOTE — the thing he wrote for her
-  // ─────────────────────────────────────────────
-  secretNote: {
-    eyebrow: "A postscript",
-    title: "Something I wrote, just for you.",
-    lede: "The one thing I didn't know how to say out loud.",
-    hint: "Rub it with your finger until it gives.",
-    revealNow: "Reveal it for me",
-    hide: "Hide it again",
-    stamped: "Yours",
-    /**
-     * ⚠️ YOUR NOTE — paste the real thing over this sentence.
-     * Use \n\n between paragraphs. This is the heart of the whole
-     * site, so make it count.
-     */
-    note:
-      "This is the placeholder note. Replace this whole paragraph in content.ts with the real words — nothing else needs to change.",
-  },
-
-  // ─────────────────────────────────────────────
-  // THE END
+  // THE FINALE — Closing celebration
   // ─────────────────────────────────────────────
   finale: {
-    eyebrow: "And with that",
+    eyebrow: "The final page, for now",
     title: "Happy Birthday,",
     closing:
-      "Thank you for being the best part of every chapter so far. I hope this one is your favourite yet.",
-    replay: "Read it again",
+      "Thank you for being the sweetest melody in every memory and the brightest light in every room. Here is to celebrating you today, tomorrow, and across every chapter yet to come.",
+    replay: "Return to the beginning",
   },
 
   // ─────────────────────────────────────────────
-  // THE JOURNEY — Memorable milestones & adventures
+  // TIMELINE MOMENTS — The 4 photo slots
   // ─────────────────────────────────────────────
   timelineMoments: [
     {
       date: "Our first hello",
-      title: "Where it all began",
+      title: "Where the story began",
       description:
-        "From the first conversation, it was obvious you operated on a completely different frequency. Witty, fiercely smart, and impossible to forget.",
+        "The very moment our paths crossed — witty, brilliant, and completely unforgettable from day one.",
       image: "/photos/how-we-met.jpg",
-      tag: "The Beginning",
+      tag: "Chapter I",
     },
     {
-      date: "Lost, together",
-      title: "Anywhere with you",
+      date: "Unfiltered laughter",
+      title: "Adventures & quiet drives",
       description:
-        "Getting lost on backroads, playing our favorite albums on repeat, and realizing that anywhere with you instantly turns into the best story.",
+        "Singing along off-key, taking scenic detours, and finding pure comfort in just being together.",
       image: "/photos/first-date.jpg",
-      tag: "Adventure",
+      tag: "Chapter II",
     },
     {
-      date: "Proud of you",
-      title: "Watching you shine",
+      date: "Pure pride",
+      title: "Watching you conquer",
       description:
-        "Seeing you pour your heart into your goals and knock them out of the park. Nobody works harder or deserves every ounce of success more than you do.",
+        "Seeing your drive, your sharp intellect, and the graceful strength you bring to everything you set your mind to.",
       image: "/photos/when-i-knew.jpg",
-      tag: "Milestone",
+      tag: "Chapter III",
     },
     {
-      date: "Still being written",
-      title: "And now — today",
+      date: "Today & tomorrow",
+      title: "The pages ahead",
       description:
-        "And this one is still being written. Tonight, and everything good that's coming after it. My favourite part of you is always the next chapter of you.",
+        "Celebrating the wonderful person you are today, and eagerly anticipating all the magic the next year holds for you.",
       image: "/photos/today.jpg",
-      tag: "Today",
+      tag: "Chapter IV",
     },
   ] satisfies TimelineMoment[],
-
-  // ─────────────────────────────────────────────
-  // WHAT MAKES YOU EXTRAORDINARY (Traits celebrating her)
-  // ─────────────────────────────────────────────
-  traits: [
-    {
-      title: "Relentless Ambition",
-      desc: "When you set your mind on a goal, there is no stopping you. Your work ethic and focus inspire everyone around you.",
-      badge: "Superpower",
-    },
-    {
-      title: "Unrivaled Sense of Humor",
-      desc: "Dry wit, lightning-fast banter, and that unmistakable laugh that immediately lights up the entire room.",
-      badge: "Vibe",
-    },
-    {
-      title: "Quiet Resilience",
-      desc: "No matter how tough or chaotic things get, you handle adversity with unbelievable grace and composure.",
-      badge: "Strength",
-    },
-    {
-      title: "Deep & Genuine Empathy",
-      desc: "The effortless way you make people feel heard, understood, and truly valued without ever asking for praise.",
-      badge: "Heart",
-    },
-    {
-      title: "Impeccable Taste",
-      desc: "In music, design, food, and life in general. You just have that rare, natural eye for quality.",
-      badge: "Aesthetic",
-    },
-    {
-      title: "Fierce Loyalty",
-      desc: "If you're in someone's corner, you stand with them unconditionally. Having you on my team is the greatest privilege.",
-      badge: "Character",
-    },
-    {
-      title: "The Ultimate Conversationalist",
-      desc: "From ridiculous 2 AM theories to deep philosophical debates, talking with you is never boring.",
-      badge: "Intellect",
-    },
-    {
-      title: "Unapologetically Yourself",
-      desc: "You own who you are with confidence and authenticity. It's magnetic and admirable.",
-      badge: "Authenticity",
-    },
-  ] satisfies Trait[],
-
-  // ─────────────────────────────────────────────
-  // THE YEAR AHEAD — Dreams & Milestones
-  // ─────────────────────────────────────────────
-  yearAhead: [
-    {
-      icon: "🎯",
-      title: "Crushing Big Career Milestones",
-      description: "Stepping into higher heights and claiming the recognition you have worked so hard for.",
-    },
-    {
-      icon: "✈️",
-      title: "New Horizons & Stamp Passports",
-      description: "Exploring new cities, tasting new foods, and making fresh stories across the globe.",
-    },
-    {
-      icon: "🌿",
-      title: "Peace, Health & Balance",
-      description: "Prioritizing your well-being, slowing down to breathe, and enjoying every single season.",
-    },
-    {
-      icon: "🥂",
-      title: "Unforgettable Celebrations",
-      description: "More toasts, more spontaneous late-night adventures, and celebrating every single win.",
-    },
-  ] satisfies YearAheadWish[],
-
-  // ─────────────────────────────────────────────
-  // THE BIRTHDAY LETTER — Mature, heartfelt, supportive
-  // ─────────────────────────────────────────────
-  letter: {
-    salutation: "Happy Birthday,",
-    bodyParagraphs: [
-      "Another year wiser, bolder, and more accomplished. Watching you grow, evolve, and conquer your challenges over this past year has been nothing short of inspiring.",
-      "You carry yourself with a rare combination of grit, intellect, and grace that commands respect everywhere you go. But what I admire most isn't just what you accomplish — it's the warmth, sincerity, and joy you bring to the people around you every single day.",
-      "As you step into this new chapter, my wish for you is simple: I hope this year brings you the peace of mind you deserve, exciting opportunities that match your ambition, and countless moments that make you smile until your cheeks hurt.",
-      "I am incredibly proud of who you are, deeply lucky to share life with you, and always in your corner cheering you on as you take on the world.",
-    ],
-    signoff: "Cheers to you and your best year yet,",
-    signature: "With all my respect & love",
-  },
 };
 
 /** Everything the app reads, in one type. */

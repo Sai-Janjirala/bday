@@ -1,13 +1,8 @@
 /**
- * FinalReveal — the last thing she sees.
+ * FinalReveal — The closing page of the keepsake book.
  *
- * Full height, night, and close to empty on purpose. Everything on the
- * page has been building to this one screen, so it stays quiet: a name,
- * a line, a way back to the beginning.
- *
- * It isn't a slideshow, though. Tap anywhere and a small bloom of
- * hearts rises from her finger — the last thing the site does for her
- * is let her play with it.
+ * Full height, night tone, candlelit atmosphere with embossed gold name,
+ * tap-anywhere rising heart blooms, and a quiet replay invitation.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -61,7 +56,7 @@ export default function FinalReveal({ onReplay }: FinalRevealProps) {
         id,
         x: clientX - rect.left,
         y: clientY - rect.top,
-        size: 12 + Math.random() * 12,
+        size: 14 + Math.random() * 14,
         drift: (Math.random() - 0.5) * 60,
         spin: (Math.random() - 0.5) * 40,
       };
@@ -81,7 +76,7 @@ export default function FinalReveal({ onReplay }: FinalRevealProps) {
     <div
       ref={hostRef}
       onPointerDown={(event) => spawnBloom(event.clientX, event.clientY)}
-      className="relative"
+      className="relative cursor-pointer"
     >
       <section
         id="birthday"
@@ -89,14 +84,14 @@ export default function FinalReveal({ onReplay }: FinalRevealProps) {
         data-tone="night"
         className="relative isolate flex min-h-[100svh] flex-col justify-between overflow-clip bg-ink py-16"
       >
-        {/* ── Light sources ── */}
+        {/* ── Ambient Light Sources ── */}
         <div
           aria-hidden="true"
           data-decorative="true"
           className="aura top-[-14rem] left-1/2 h-[38rem] w-[38rem] -translate-x-1/2"
           style={{
             background:
-              "radial-gradient(circle, rgba(176,101,124,0.24) 0%, rgba(176,101,124,0) 68%)",
+              "radial-gradient(circle, rgba(176,101,124,0.25) 0%, rgba(176,101,124,0) 68%)",
           }}
         />
         <div
@@ -105,7 +100,7 @@ export default function FinalReveal({ onReplay }: FinalRevealProps) {
           className="aura bottom-[-16rem] left-[-10rem] h-[30rem] w-[30rem]"
           style={{
             background:
-              "radial-gradient(circle, rgba(169,138,86,0.18) 0%, rgba(169,138,86,0) 70%)",
+              "radial-gradient(circle, rgba(169,138,86,0.2) 0%, rgba(169,138,86,0) 70%)",
           }}
         />
         <FloatingHearts count={18} density={0.8} />
@@ -114,7 +109,7 @@ export default function FinalReveal({ onReplay }: FinalRevealProps) {
         <Flowers variant="cluster" tone="night" className="-top-10 -right-10 w-52 opacity-45 sm:w-64" />
         <Flowers variant="rose" tone="night" className="-bottom-8 -left-10 w-44 opacity-35 sm:w-52" />
 
-        {/* ── Blooms she taps into being ── */}
+        {/* ── Tap Rising Hearts Blooms ── */}
         <div aria-hidden="true" data-decorative="true" className="pointer-events-none absolute inset-0 z-20">
           {blooms.map((bloom) => (
             <motion.svg
@@ -125,9 +120,9 @@ export default function FinalReveal({ onReplay }: FinalRevealProps) {
               initial={{ opacity: 0, y: 0, x: 0, scale: 0.2, rotate: 0 }}
               animate={{
                 opacity: [0, 1, 1, 0],
-                y: -70 - bloom.size * 3,
+                y: -80 - bloom.size * 3,
                 x: bloom.drift,
-                scale: [0.2, 1.15, 1],
+                scale: [0.2, 1.2, 1],
                 rotate: bloom.spin,
               }}
               transition={{ duration: BLOOM_MS / 1000, ease: "easeOut" }}
@@ -135,17 +130,17 @@ export default function FinalReveal({ onReplay }: FinalRevealProps) {
             >
               <path
                 d="M12 20s-7.5-4.7-7.5-9.6A4.4 4.4 0 0 1 12 7.7a4.4 4.4 0 0 1 7.5 2.7C19.5 15.3 12 20 12 20Z"
-                fill="var(--color-rose-mist)"
-                opacity="0.85"
+                fill="var(--color-brass-light)"
+                opacity="0.9"
               />
             </motion.svg>
           ))}
         </div>
 
-        {/* ── Main ── */}
+        {/* ── Main Finale Typography Stage ── */}
         <div className="shell relative z-10 flex flex-1 flex-col items-center justify-center py-16 text-center">
           <motion.p
-            className="eyebrow mb-8 text-brass-light/75"
+            className="eyebrow mb-8 text-brass-light/80"
             initial={{ opacity: 0, y: reduced ? 0 : 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
@@ -157,42 +152,56 @@ export default function FinalReveal({ onReplay }: FinalRevealProps) {
 
           <h2
             id="finale-title"
-            className="font-display text-[clamp(2.5rem,1.4rem+5.4vw,6rem)] leading-[0.98]"
+            className="font-display text-[clamp(2.6rem,1.5rem+5.6vw,6.4rem)] leading-[0.98]"
           >
-            <span className="block font-light text-porcelain/55 italic">
+            <span className="block font-light text-porcelain/60 italic">
               <AnimatedText text={config.finale.title} delay={0.15} stagger={0.03} />
             </span>
-            <span className="mt-2 block text-rose-mist sm:mt-3">
-              <AnimatedText text={config.herName} delay={0.7} stagger={0.05} />
+            {/* Embossed Gold Metallic Name */}
+            <span
+              className="mt-3 block font-semibold tracking-wide sm:mt-4"
+              style={{
+                background:
+                  "linear-gradient(135deg, #FFF6E5 0%, #F3D59B 30%, #C99B4B 60%, #FDF4E1 90%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                filter: "drop-shadow(0 2px 14px rgba(201, 155, 75, 0.4))",
+                letterSpacing: "0.02em",
+              }}
+            >
+              <AnimatedText text={config.herName} delay={0.65} stagger={0.05} />
             </span>
           </h2>
 
           <motion.div
-            className="mt-10 h-px w-24 origin-center bg-gradient-to-r from-transparent via-brass-light/60 to-transparent"
+            className="mt-10 h-px w-28 origin-center bg-gradient-to-r from-transparent via-brass-light/70 to-transparent"
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 1.2, delay: 1.1, ease: EASE }}
+            transition={{ duration: 1.2, delay: 1.0, ease: EASE }}
           />
 
           <motion.p
-            className="mt-10 max-w-lg text-[0.975rem] leading-[1.8] text-pretty text-porcelain/60 sm:text-base"
+            className="mt-10 max-w-lg text-[0.975rem] leading-[1.8] text-pretty text-porcelain/65 sm:text-base"
             initial={{ opacity: 0, y: reduced ? 0 : 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 1, delay: 1.25 }}
+            transition={{ duration: 1, delay: 1.2 }}
           >
             {config.finale.closing}
           </motion.p>
 
           <motion.button
             type="button"
-            onClick={onReplay}
-            className="focus-inset group mt-12 inline-flex min-h-14 cursor-pointer items-center gap-3 rounded-full border border-porcelain/20 px-8 text-[0.6875rem] font-medium tracking-[0.2em] text-porcelain/70 uppercase transition-colors duration-700 hover:border-brass-light/60 hover:text-brass-light"
+            onClick={(e) => {
+              e.stopPropagation();
+              onReplay();
+            }}
+            className="focus-inset group mt-12 inline-flex min-h-14 cursor-pointer items-center gap-3 rounded-full border border-brass-light/35 bg-porcelain/5 px-8 text-[0.6875rem] font-medium tracking-[0.2em] text-porcelain/80 uppercase shadow-lg backdrop-blur-sm transition-all duration-500 hover:border-brass-light hover:bg-porcelain/10 hover:text-brass-light"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.9, delay: 1.5 }}
+            transition={{ duration: 0.9, delay: 1.45 }}
           >
             {config.finale.replay}
             <motion.span
@@ -206,13 +215,13 @@ export default function FinalReveal({ onReplay }: FinalRevealProps) {
           </motion.button>
 
           <motion.p
-            className="mt-10 text-[0.625rem] tracking-[0.2em] text-porcelain/25 uppercase"
+            className="mt-10 text-[0.625rem] tracking-[0.2em] text-porcelain/30 uppercase"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 1, delay: 1.9 }}
+            transition={{ duration: 1, delay: 1.8 }}
           >
-            Tap anywhere to send one up
+            Tap anywhere to send up a bloom of hearts
           </motion.p>
         </div>
 
@@ -224,7 +233,7 @@ export default function FinalReveal({ onReplay }: FinalRevealProps) {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 1.1 }}
         >
-          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-porcelain/10 pt-5 text-[0.625rem] tracking-[0.22em] text-porcelain/30 uppercase">
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-porcelain/10 pt-5 text-[0.625rem] tracking-[0.22em] text-porcelain/35 uppercase">
             <span>For {config.herName}</span>
             <span className="hidden h-px flex-1 bg-porcelain/10 sm:block" />
             <span>{todayLabel}</span>

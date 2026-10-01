@@ -8,11 +8,17 @@
  */
 import { useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { Memory } from "../../config/content";
 import PhotoPlaceholder from "./PhotoPlaceholder";
 
+export interface LightboxItem {
+  image: string;
+  caption: string;
+  date: string;
+  tag: string;
+}
+
 interface LightboxProps {
-  memories: Memory[];
+  memories: LightboxItem[];
   index: number | null;
   onClose: () => void;
   onNavigate: (index: number) => void;
