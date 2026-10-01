@@ -19,46 +19,33 @@ export default function LoadingScreen({ isLoading }: LoadingScreenProps) {
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center"
           style={{
             background:
-              "radial-gradient(ellipse at center, #FFF8F0 0%, #F9E4E4 40%, #EDE4F0 80%, #D4B8E0 100%)",
+              "radial-gradient(ellipse at center, #FFFDF9 0%, #FAF4EA 50%, #F3E7D5 100%)",
           }}
           exit={{
             opacity: 0,
-            scale: 1.1,
+            scale: 1.05,
             filter: "blur(10px)",
           }}
-          transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 1.0, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          {/* Gradient blobs */}
-          <div
-            className="gradient-blob w-64 h-64 -top-20 -left-20 animate-drift"
-            style={{ background: "rgba(232, 160, 191, 0.2)", position: "absolute" }}
-          />
-          <div
-            className="gradient-blob w-48 h-48 -bottom-10 -right-10 animate-drift"
-            style={{
-              background: "rgba(212, 184, 224, 0.2)",
-              position: "absolute",
-              animationDelay: "-3s",
-            }}
-          />
-
-          {/* Pulsing heart */}
+          {/* Glowing sparkle badge */}
           <motion.div
-            className="text-6xl md:text-7xl mb-8"
+            className="w-16 h-16 rounded-2xl bg-amber-100 border border-amber-200/80 flex items-center justify-center text-3xl mb-6 shadow-sm"
             animate={{
-              scale: [1, 1.2, 1, 1.2, 1],
+              scale: [1, 1.08, 1],
+              rotate: [0, 4, -4, 0],
             }}
             transition={{
-              duration: 1.5,
+              duration: 2,
               repeat: Infinity,
               ease: "easeInOut",
             }}
           >
-            💝
+            🎂
           </motion.div>
 
           {/* Her name — letter by letter */}
-          <div className="font-serif text-3xl md:text-4xl text-rose-deep mb-4">
+          <div className="font-serif text-3xl md:text-5xl font-bold text-stone-800 mb-3">
             <AnimatedText
               text={config.herName}
               mode="letter"
@@ -69,12 +56,12 @@ export default function LoadingScreen({ isLoading }: LoadingScreenProps) {
 
           {/* Subtitle */}
           <motion.p
-            className="font-script text-lg text-warm-gray"
+            className="font-mono text-xs tracking-widest uppercase text-stone-500"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 0.8 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
           >
-            Loading something special...
+            ✦ Birthday Edition • Loaded With Care ✦
           </motion.p>
 
           {/* Soft progress dots */}
@@ -87,7 +74,7 @@ export default function LoadingScreen({ isLoading }: LoadingScreenProps) {
             {[0, 1, 2].map((i) => (
               <motion.span
                 key={i}
-                className="w-2 h-2 rounded-full bg-rose/60"
+                className="w-2 h-2 rounded-full bg-amber-700/60"
                 animate={{
                   scale: [1, 1.5, 1],
                   opacity: [0.4, 1, 0.4],

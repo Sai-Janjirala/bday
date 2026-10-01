@@ -56,19 +56,19 @@ export default function MemoriesGallery() {
           style={{ y: headingY, opacity: headingOpacity }}
         >
           <motion.span
-            className="font-script text-xl md:text-2xl text-rose inline-block mb-3"
+            className="inline-block px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase bg-amber-100 text-amber-800 border border-amber-200 mb-3"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            Moments I Treasure
+            Snapshots & Adventures 📸
           </motion.span>
-          <h2 className="font-serif text-3xl md:text-5xl font-bold text-charcoal">
-            Our Favorite Memories
+          <h2 className="font-serif text-3xl md:text-5xl font-bold text-stone-800">
+            The Highlight Reel
           </h2>
           <motion.div
-            className="w-16 h-0.5 bg-gradient-to-r from-gold to-rose mx-auto mt-4"
+            className="w-16 h-0.5 bg-gradient-to-r from-amber-600 to-rose-500 mx-auto mt-4"
             initial={{ width: 0 }}
             whileInView={{ width: 64 }}
             viewport={{ once: true }}

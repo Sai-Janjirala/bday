@@ -106,19 +106,19 @@ export default function HeroSection() {
         className="relative z-10 text-center px-6 max-w-2xl mx-auto"
         style={{ y, opacity, scale }}
       >
-        {/* Small decorative text */}
-        <motion.p
-          className="font-script text-lg md:text-xl text-rose mb-4"
+        {/* Small decorative badge */}
+        <motion.div
+          className="inline-block px-3 py-1 rounded-full text-xs font-mono tracking-widest uppercase bg-amber-100/80 text-amber-900 border border-amber-200 mb-4"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
         >
-          ✦ A special day for a special soul ✦
-        </motion.p>
+          ✦ Celebrating You & Your Next Chapter ✦
+        </motion.div>
 
         {/* Main heading — letter by letter */}
         <div className="mb-6">
-          <div className="font-serif text-4xl sm:text-5xl md:text-7xl font-bold leading-tight text-charcoal">
+          <div className="font-serif text-4xl sm:text-5xl md:text-7xl font-bold leading-tight text-stone-800">
             <AnimatedText
               text="Happy Birthday"
               mode="letter"
@@ -127,7 +127,7 @@ export default function HeroSection() {
             />
           </div>
           <div className="mt-2 md:mt-4">
-            <span className="font-serif text-3xl sm:text-4xl md:text-6xl font-semibold text-gradient-romantic">
+            <span className="font-serif text-3xl sm:text-4xl md:text-6xl font-semibold bg-gradient-to-r from-amber-700 via-rose-600 to-amber-800 bg-clip-text text-transparent">
               <AnimatedText
                 text={config.herName}
                 mode="letter"
@@ -140,7 +140,7 @@ export default function HeroSection() {
 
         {/* Subtitle */}
         <motion.p
-          className="font-sans text-base md:text-lg text-charcoal-light/80 mb-10 max-w-md mx-auto leading-relaxed"
+          className="font-sans text-base md:text-lg text-stone-600 mb-10 max-w-md mx-auto leading-relaxed"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2.5, duration: 0.8 }}
@@ -151,7 +151,7 @@ export default function HeroSection() {
         {/* CTA Button */}
         <div className="relative">
           <MagicButton onClick={handleCTAClick} delay={3} size="lg">
-            Begin Our Story ♡
+            Explore Celebration ✨
           </MagicButton>
           <Confetti active={showConfetti} originX={50} originY={50} />
         </div>

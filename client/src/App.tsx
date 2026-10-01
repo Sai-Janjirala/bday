@@ -1,6 +1,6 @@
 /**
  * App.tsx — Main application shell
- * Orchestrates the loading screen and scroll-through love story experience
+ * Orchestrates the mature, creative, and interactive birthday celebration experience
  */
 import { useState, useEffect } from "react";
 
@@ -10,12 +10,13 @@ import ScrollProgress from "./components/layout/ScrollProgress";
 // Sections (in scroll order)
 import LoadingScreen from "./components/sections/LoadingScreen";
 import HeroSection from "./components/sections/HeroSection";
+import InteractiveCake from "./components/sections/InteractiveCake";
 import HowWeMetSection from "./components/sections/HowWeMetSection";
 import MemoriesGallery from "./components/sections/MemoriesGallery";
-import ReasonsILoveYou from "./components/sections/ReasonsILoveYou";
-import FutureDreams from "./components/sections/FutureDreams";
-import GiftReveal from "./components/sections/GiftReveal";
-import BirthdayMessage from "./components/sections/BirthdayMessage";
+import WhatMakesYouExtraordinary from "./components/sections/WhatMakesYouExtraordinary";
+import BirthdayCoupons from "./components/sections/BirthdayCoupons";
+import TheYearAhead from "./components/sections/TheYearAhead";
+import BirthdayLetter from "./components/sections/BirthdayLetter";
 import LoveNoteForm from "./components/sections/LoveNoteForm";
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
 
   useEffect(() => {
     // Wait for fonts and initial assets to load
-    const minLoadTime = new Promise((resolve) => setTimeout(resolve, 2800));
+    const minLoadTime = new Promise((resolve) => setTimeout(resolve, 2000));
     const fontsReady = document.fonts?.ready || Promise.resolve();
 
     Promise.all([minLoadTime, fontsReady]).then(() => {
@@ -32,22 +33,23 @@ function App() {
   }, []);
 
   return (
-    <div className="grain-overlay">
+    <div className="grain-overlay min-h-screen bg-[#FEFBF6] text-stone-800">
       {/* Loading screen with exit animation */}
       <LoadingScreen isLoading={isLoading} />
 
       {/* Scroll progress bar */}
       {!isLoading && <ScrollProgress />}
 
-      {/* Main content — scrollable love story */}
+      {/* Main content — scrollable birthday celebration */}
       <main>
         <HeroSection />
+        <InteractiveCake />
         <HowWeMetSection />
         <MemoriesGallery />
-        <ReasonsILoveYou />
-        <FutureDreams />
-        <GiftReveal />
-        <BirthdayMessage />
+        <WhatMakesYouExtraordinary />
+        <BirthdayCoupons />
+        <TheYearAhead />
+        <BirthdayLetter />
         <LoveNoteForm />
       </main>
     </div>

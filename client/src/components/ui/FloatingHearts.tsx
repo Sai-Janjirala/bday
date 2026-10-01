@@ -4,7 +4,7 @@
  */
 import { useEffect, useRef, useCallback } from "react";
 
-interface Heart {
+interface Particle {
   x: number;
   y: number;
   size: number;
@@ -14,10 +14,11 @@ interface Heart {
   rotation: number;
   rotationSpeed: number;
   color: string;
+  type: "sparkle" | "star" | "bokeh";
 }
 
 interface FloatingHeartsProps {
-  /** Number of hearts to render */
+  /** Number of particles to render */
   count?: number;
   /** Colors to randomly pick from */
   colors?: string[];
@@ -25,55 +26,79 @@ interface FloatingHeartsProps {
   className?: string;
 }
 
-const HEART_COLORS = [
-  "rgba(232, 160, 191, 0.6)",
-  "rgba(196, 91, 124, 0.4)",
-  "rgba(212, 184, 224, 0.5)",
-  "rgba(212, 168, 83, 0.3)",
-  "rgba(249, 228, 228, 0.7)",
+const CELEBRATION_COLORS = [
+  "rgba(212, 168, 83, 0.6)",  // Gold
+  "rgba(240, 217, 141, 0.5)", // Light gold
+  "rgba(232, 160, 191, 0.4)", // Rose
+  "rgba(217, 119, 6, 0.4)",   // Amber
+  "rgba(254, 251, 246, 0.7)", // Soft white
 ];
 
 export default function FloatingHearts({
   count = 25,
-  colors = HEART_COLORS,
+  colors = CELEBRATION_COLORS,
   className = "",
 }: FloatingHeartsProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const heartsRef = useRef<Heart[]>([]);
+  const heartsRef = useRef<Particle[]>([]);
   const animationRef = useRef<number>(0);
 
-  const createHeart = useCallback(
-    (canvasWidth: number, canvasHeight: number, startFromBottom = false): Heart => ({
-      x: Math.random() * canvasWidth,
-      y: startFromBottom
-        ? canvasHeight + Math.random() * 50
-        : Math.random() * canvasHeight,
-      size: Math.random() * 12 + 6,
-      speedY: -(Math.random() * 0.6 + 0.2),
-      speedX: (Math.random() - 0.5) * 0.4,
-      opacity: Math.random() * 0.5 + 0.2,
-      rotation: Math.random() * Math.PI * 2,
-      rotationSpeed: (Math.random() - 0.5) * 0.02,
-      color: colors[Math.floor(Math.random() * colors.length)],
-    }),
+  const createParticle = useCallback(
+    (canvasWidth: number, canvasHeight: number, startFromBottom = false): Particle => {
+      const types: ("sparkle" | "star" | "bokeh")[] = ["sparkle", "star", "bokeh"];
+      return {
+        x: Math.random() * canvasWidth,
+        y: startFromBottom
+          ? canvasHeight + Math.random() * 50
+          : Math.random() * canvasHeight,
+        size: Math.random() * 8 + 4,
+        speedY: -(Math.random() * 0.5 + 0.2),
+        speedX: (Math.random() - 0.5) * 0.3,
+        opacity: Math.random() * 0.6 + 0.2,
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.02,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        type: types[Math.floor(Math.random() * types.length)],
+      };
+    },
     [colors]
   );
 
-  const drawHeart = useCallback(
-    (ctx: CanvasRenderingContext2D, heart: Heart) => {
+  const drawParticle = useCallback(
+    (ctx: CanvasRenderingContext2D, p: Particle) => {
       ctx.save();
-      ctx.translate(heart.x, heart.y);
-      ctx.rotate(heart.rotation);
-      ctx.globalAlpha = heart.opacity;
-      ctx.fillStyle = heart.color;
-      ctx.beginPath();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation);
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = p.color;
 
-      const s = heart.size;
-      ctx.moveTo(0, s * 0.3);
-      ctx.bezierCurveTo(-s * 0.5, -s * 0.3, -s, s * 0.1, 0, s);
-      ctx.bezierCurveTo(s, s * 0.1, s * 0.5, -s * 0.3, 0, s * 0.3);
+      if (p.type === "star") {
+        // 4-point star sparkle
+        const s = p.size;
+        ctx.beginPath();
+        ctx.moveTo(0, -s);
+        ctx.quadraticCurveTo(0, 0, s, 0);
+        ctx.quadraticCurveTo(0, 0, 0, s);
+        ctx.quadraticCurveTo(0, 0, -s, 0);
+        ctx.quadraticCurveTo(0, 0, 0, -s);
+        ctx.fill();
+      } else if (p.type === "sparkle") {
+        // Diamond sparkle
+        const s = p.size * 0.8;
+        ctx.beginPath();
+        ctx.moveTo(0, -s);
+        ctx.lineTo(s * 0.6, 0);
+        ctx.lineTo(0, s);
+        ctx.lineTo(-s * 0.6, 0);
+        ctx.closePath();
+        ctx.fill();
+      } else {
+        // Soft glowing circular bokeh
+        ctx.beginPath();
+        ctx.arc(0, 0, p.size * 0.6, 0, Math.PI * 2);
+        ctx.fill();
+      }
 
-      ctx.fill();
       ctx.restore();
     },
     []
@@ -96,30 +121,30 @@ export default function FloatingHearts({
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Initialize hearts
+    // Initialize particles
     heartsRef.current = Array.from({ length: count }, () =>
-      createHeart(canvas.offsetWidth, canvas.offsetHeight)
+      createParticle(canvas.offsetWidth, canvas.offsetHeight)
     );
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
 
-      heartsRef.current.forEach((heart, i) => {
-        heart.y += heart.speedY;
-        heart.x += heart.speedX + Math.sin(heart.y * 0.01) * 0.3;
-        heart.rotation += heart.rotationSpeed;
-        heart.opacity *= 0.9995;
+      heartsRef.current.forEach((particle, i) => {
+        particle.y += particle.speedY;
+        particle.x += particle.speedX + Math.sin(particle.y * 0.01) * 0.3;
+        particle.rotation += particle.rotationSpeed;
+        particle.opacity *= 0.9995;
 
-        // Reset heart when it goes off screen
-        if (heart.y < -20 || heart.opacity < 0.01) {
-          heartsRef.current[i] = createHeart(
+        // Reset particle when it goes off screen
+        if (particle.y < -20 || particle.opacity < 0.01) {
+          heartsRef.current[i] = createParticle(
             canvas.offsetWidth,
             canvas.offsetHeight,
             true
           );
         }
 
-        drawHeart(ctx, heart);
+        drawParticle(ctx, particle);
       });
 
       animationRef.current = requestAnimationFrame(animate);
@@ -131,7 +156,7 @@ export default function FloatingHearts({
       cancelAnimationFrame(animationRef.current);
       window.removeEventListener("resize", resizeCanvas);
     };
-  }, [count, createHeart, drawHeart]);
+  }, [count, createParticle, drawParticle]);
 
   return (
     <canvas
