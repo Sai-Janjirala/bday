@@ -1,29 +1,35 @@
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "/api",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
 export interface LoveNote {
-  _id?: string;
+  id?: string;
   name?: string;
   message: string;
   createdAt?: string;
 }
 
-/** Save a love note to the database */
-export async function saveLoveNote(note: Omit<LoveNote, "_id" | "createdAt">) {
-  const { data } = await api.post<LoveNote>("/notes", note);
-  return data;
+const STORAGE_KEY = "birthday_love_notes";
+
+/** Save a love note purely in localStorage on client side */
+export function saveLoveNote(note: Omit<LoveNote, "id" | "createdAt">): LoveNote {
+  const notes = getLoveNotes();
+  const newNote: LoveNote = {
+    ...note,
+    id: Date.now().toString(),
+    createdAt: new Date().toISOString(),
+  };
+  notes.unshift(newNote);
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+  } catch (err) {
+    console.warn("Could not save note to localStorage", err);
+  }
+  return newNote;
 }
 
-/** Get all love notes */
-export async function getLoveNotes() {
-  const { data } = await api.get<LoveNote[]>("/notes");
-  return data;
+/** Get all love notes from localStorage */
+export function getLoveNotes(): LoveNote[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
 }
-
-export default api;

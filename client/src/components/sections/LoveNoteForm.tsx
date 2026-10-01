@@ -1,44 +1,39 @@
 /**
  * LoveNoteForm — Glassmorphic form for leaving a love note/wish
- * Saves to MongoDB via Express API (optional)
+ * Purely frontend with localStorage persistence
  */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Confetti from "../ui/Confetti";
+import { saveLoveNote } from "../../lib/api";
 
-interface LoveNote {
+interface LoveNoteInput {
   name?: string;
   message: string;
 }
 
 export default function LoveNoteForm() {
-  const [note, setNote] = useState<LoveNote>({ name: "", message: "" });
+  const [note, setNote] = useState<LoveNoteInput>({ name: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!note.message.trim()) return;
 
     setIsSubmitting(true);
+    saveLoveNote({
+      name: note.name?.trim() || "Anonymous admirer",
+      message: note.message.trim(),
+    });
 
-    try {
-      // Try to save to backend (will gracefully fail if backend isn't running)
-      await fetch("/api/notes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(note),
-      });
-    } catch {
-      // Backend not available — that's okay, just show the success animation
-      console.log("Backend not available — note saved locally in spirit 💕");
-    }
-
-    setIsSubmitting(false);
-    setSubmitted(true);
-    setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 100);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitted(true);
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 2000);
+    }, 400);
   };
 
   return (
