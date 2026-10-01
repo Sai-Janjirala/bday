@@ -57,7 +57,7 @@ export default function AnimatedText({
       filter: "blur(0px)",
       transition: {
         duration: mode === "line" ? 0.6 : 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
       },
     },
   };
