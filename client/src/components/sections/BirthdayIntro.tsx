@@ -18,6 +18,7 @@ import AnimatedText from "../ui/AnimatedText";
 import WaxSeal from "../ui/WaxSeal";
 import FloatingHearts from "../ui/FloatingHearts";
 import Petals from "../ui/Petals";
+import Stars from "../ui/Stars";
 
 interface BirthdayIntroProps {
   /** False until fonts and the first photos are ready. */
@@ -63,6 +64,7 @@ export default function BirthdayIntro({ ready, onBegin }: BirthdayIntroProps) {
       />
       <FloatingHearts count={20} density={0.85} />
       <Petals active mode="fall" count={40} duration={11000} />
+      <Stars count={70} />
 
       {/* ── Content ── */}
       <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 py-16 text-center">
@@ -71,7 +73,7 @@ export default function BirthdayIntro({ ready, onBegin }: BirthdayIntroProps) {
           initial={false}
           animate={{ opacity: 1 }}
         >
-          {ready ? "For you" : config.intro.preparing}
+          {ready ? `For ${config.herName}` : config.intro.preparing}
         </motion.p>
 
         <h1 className="max-w-2xl text-balance">
@@ -123,7 +125,7 @@ export default function BirthdayIntro({ ready, onBegin }: BirthdayIntroProps) {
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 2.6 }}
       >
-        <span>{config.chapterTitle}</span>
+        <span>For {config.herName}</span>
         <span className="h-px flex-1 bg-porcelain/10" />
         <span>One evening</span>
       </motion.div>
@@ -144,7 +146,6 @@ function IntroSeal({
   label: string;
 }) {
   const reduced = useReducedMotion();
-  const monogram = config.herName.charAt(0).toUpperCase();
 
   return (
     <button
@@ -192,7 +193,7 @@ function IntroSeal({
         animate={reduced ? {} : { y: [0, -3, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       >
-        <WaxSeal monogram={monogram} size={104} className="opacity-90" />
+        <WaxSeal size={104} className="opacity-90" />
       </motion.span>
 
       {/* Sits above while preparing */}

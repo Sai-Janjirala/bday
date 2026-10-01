@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ReasonsSection — the eight reasons, read one at a time.
  *
  * The old version was a four-column grid of eight identical cards with
@@ -52,13 +52,13 @@ export default function ReasonsSection() {
     <SectionShell
       id="reasons"
       tone="blush"
-      marker="III"
       eyebrow={config.reasons.eyebrow}
       title={config.reasons.title}
       lede={config.reasons.lede}
       spacing="tall"
     >
       <Flowers variant="cluster" className="-top-6 -right-10 w-44 opacity-50 sm:w-56" />
+      <Flowers variant="rose" className="-bottom-10 -left-12 w-44 opacity-40 sm:w-52" />
 
       <div className="mt-4 grid gap-8 lg:mt-10 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:gap-14 xl:grid-cols-[minmax(0,19rem)_minmax(0,1fr)]">
         {/* ── The index ── */}

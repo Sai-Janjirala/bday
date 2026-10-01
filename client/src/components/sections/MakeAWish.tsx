@@ -1,4 +1,4 @@
-/**
+﻿/**
  * MakeAWish — the ritual, and the one real game in the experience.
  *
  * Placed on the night background on purpose: a dark room is what makes
@@ -16,7 +16,9 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { config } from "../../config/content";
 import { useHoldProgress } from "../../hooks/useHoldProgress";
 import SectionShell from "../ui/SectionShell";
+import Flowers from "../ui/Flowers";
 import Petals from "../ui/Petals";
+import Stars from "../ui/Stars";
 
 const CANDLE_COUNT = 5;
 const FILL_MS = 2200;
@@ -88,7 +90,6 @@ export default function MakeAWish() {
     <SectionShell
       id="wish"
       tone="night"
-      marker="V"
       align="center"
       eyebrow={config.wish.eyebrow}
       title={config.wish.title}
@@ -97,6 +98,9 @@ export default function MakeAWish() {
       className="isolate"
     >
       <Petals active={burst} mode="burst" count={40} duration={2200} />
+      <Stars count={50} />
+      <Flowers variant="sprig" tone="night" className="-top-12 -left-12 w-44 opacity-35 sm:w-52" />
+      <Flowers variant="cluster" tone="night" className="-right-12 -bottom-12 w-52 opacity-30 sm:w-60" />
 
       {/* Candlelight spilling onto the page. */}
       <div

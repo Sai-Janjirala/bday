@@ -1,14 +1,14 @@
-/**
- * PhotoGallery — a handful of photographs, and the line under them.
+﻿/**
+ * PhotoGallery — the photographs, and the lines under them.
  *
- * No rail, no equal grid. A loose arrangement of four frames, each
- * printed at a slightly different size and angle the way real prints
- * get pinned up — staggered down the page so the eye wanders instead
- * of scanning. Tapping any frame opens the full lightbox, where the
- * other two live as well.
+ * A loose arrangement of four frames, each printed at a slightly
+ * different size and angle the way real prints get pinned up —
+ * staggered down the page so the eye wanders instead of scanning.
+ * Tapping any frame opens the lightbox, where she can look at each
+ * one properly.
  *
- * The quote underneath does the work the old section's caption bar
- * used to: it tells her what these photographs actually are.
+ * The quote and the quiet lines underneath tell her what these
+ * photographs actually are: the journey, in four frames.
  */
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -32,18 +32,18 @@ const PLACEMENT: Array<{
 ];
 
 const EASE = [0.16, 1, 0.3, 1] as const;
+const PHOTO_COUNT = Math.min(4, config.timelineMoments.length);
 
 export default function PhotoGallery() {
   const reduced = useReducedMotion();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  const shown = config.memories.slice(0, config.gallery.count);
+  const shown = config.timelineMoments.slice(0, PHOTO_COUNT);
 
   return (
     <SectionShell
-      id="frames"
+      id="photos"
       tone="light"
-      marker="IV"
       eyebrow={config.gallery.eyebrow}
       title={config.gallery.title}
       lede={config.gallery.lede}
@@ -53,17 +53,15 @@ export default function PhotoGallery() {
 
       <div className="mt-6 lg:mt-12">
         <div className="grid grid-cols-2 items-start gap-4 sm:gap-6 lg:grid-cols-12 lg:gap-8">
-          {shown.map((memory, index) => {
+          {shown.map((moment, index) => {
             const place = PLACEMENT[index];
             return (
               <motion.button
-                key={memory.image}
+                key={moment.image}
                 type="button"
                 onClick={() => setLightboxIndex(index)}
-                aria-label={`Open photo ${index + 1}: ${memory.caption}`}
-                className={`focus-inset group cursor-pointer text-left lg:block ${place.cols} ${place.shift} ${
-                  index % 2 === 0 ? "col-start-auto" : ""
-                }`}
+                aria-label={`Open photo ${index + 1}: ${moment.title}`}
+                className={`focus-inset group cursor-pointer text-left lg:block ${place.cols} ${place.shift}`}
                 initial={{ opacity: 0, y: reduced ? 0 : 34, rotate: reduced ? 0 : place.rotate + 2 }}
                 whileInView={{
                   opacity: 1,
@@ -80,29 +78,29 @@ export default function PhotoGallery() {
               >
                 <div className="zoom-frame relative paper-edge" style={{ borderRadius: 3 }}>
                   <PhotoPlaceholder
-                    src={memory.image}
-                    alt={memory.caption}
+                    src={moment.image}
+                    alt={moment.title}
                     aspectRatio={place.aspect}
                     eager={index < 2}
                     style={{ borderRadius: 3 }}
                   />
                   <span className="pointer-events-none absolute top-3 left-3 rounded-full bg-porcelain/85 px-2.5 py-1 text-[0.5625rem] font-medium tracking-[0.18em] text-ink-text/70 uppercase backdrop-blur-sm">
-                    {memory.tag}
+                    {moment.tag}
                   </span>
                 </div>
 
                 <div className="mt-3.5 pr-2">
                   <p className="font-display text-[1.0625rem] leading-snug text-ink-text">
-                    {memory.caption}
+                    {moment.title}
                   </p>
-                  <p className="eyebrow mt-1.5 text-rose">{memory.date}</p>
+                  <p className="eyebrow mt-1.5 text-rose">{moment.date}</p>
                 </div>
               </motion.button>
             );
           })}
         </div>
 
-        {/* ── The quote ── */}
+        {/* ── The words under the photographs ── */}
         <motion.div
           className="mx-auto mt-20 max-w-3xl text-center lg:mt-28"
           initial={{ opacity: 0, y: reduced ? 0 : 18 }}
@@ -112,17 +110,57 @@ export default function PhotoGallery() {
         >
           <span
             aria-hidden="true"
-            className="mx-auto mb-7 block font-display text-6xl leading-none text-rose/25 italic select-none"
+            className="mx-auto mb-8 block font-display text-7xl leading-none text-rose/25 italic select-none"
           >
-            ”
+            "
           </span>
-          <blockquote className="font-display text-[clamp(1.5rem,1.15rem+1.6vw,2.5rem)] leading-[1.28] text-balance text-ink-text italic">
-            {config.gallery.quote}
-          </blockquote>
-          <div className="mt-8 flex items-center justify-center gap-4">
+
+          <div className="space-y-6">
+            {config.gallery.quotes.map((quote, index) => (
+              <motion.blockquote
+                key={quote}
+                className="font-display text-[clamp(1.4rem,1.05rem+1.5vw,2.25rem)] leading-[1.3] text-balance text-ink-text italic"
+                initial={{ opacity: 0, y: reduced ? 0 : 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.9, delay: index * 0.12, ease: EASE }}
+              >
+                {quote}
+              </motion.blockquote>
+            ))}
+          </div>
+
+          <motion.div
+            className="mx-auto mt-11 max-w-xl space-y-4"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 1, delay: 0.4 }}
+          >
+            {config.gallery.lines.map((line) => (
+              <p
+                key={line}
+                className="font-serif text-[1.02rem] leading-7 text-muted sm:text-lg"
+              >
+                {line}
+              </p>
+            ))}
+          </motion.div>
+
+          <motion.p
+            className="mt-8 font-display text-[1.15rem] text-rose-deep/90 italic"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 1, delay: 0.7 }}
+          >
+            {config.gallery.signoff}
+          </motion.p>
+
+          <div className="mt-10 flex items-center justify-center gap-4">
             <span className="h-px w-10 bg-rose/30" />
             <p className="eyebrow text-muted-light">
-              {config.gallery.hint} · {shown.length} of {config.memories.length}
+              {config.gallery.hint} · {PHOTO_COUNT} of {config.timelineMoments.length}
             </p>
             <span className="h-px w-10 bg-rose/30" />
           </div>
@@ -130,7 +168,12 @@ export default function PhotoGallery() {
       </div>
 
       <Lightbox
-        memories={config.memories}
+        memories={config.timelineMoments.map((moment) => ({
+          image: moment.image,
+          caption: moment.title,
+          date: moment.date,
+          tag: moment.tag,
+        }))}
         index={lightboxIndex}
         onClose={() => setLightboxIndex(null)}
         onNavigate={setLightboxIndex}

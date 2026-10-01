@@ -4,16 +4,12 @@
  * ═══════════════════════════════════════════════════════════════
  *
  * This is the single source of truth for everything personal.
- * Every name, photo path, memory, trait, voucher and line of the
- * letter lives here. Nothing in the UI hard-codes content, so
- * this file is the only thing you need to edit to make the
- * experience yours.
+ * Every name, photo path, memory, trait and line of the letter lives
+ * here. Nothing in the UI hard-codes content, so this file is the
+ * only thing you need to edit to make the experience yours.
  *
  * ── Editing notes ───────────────────────────────────────────
  *  · herName / nickname    → who this is for
- *  · birthday              → set month + day (1-based) to switch on
- *                            the live countdown in the hero.
- *                            Leave 0 to keep it off.
  *  · photos                → drop real images into
  *                            `client/public/photos/` using the exact
  *                            filenames below. Until then each frame
@@ -56,24 +52,10 @@ export interface YearAheadWish {
 
 export const config = {
   /** Her name — the most important value in this file. */
-  herName: "Sarah",
+  herName: "Potti",
 
   /** Nickname or pet name, if you have one. */
-  nickname: "Birthday Girl",
-
-  /** The chapter you're both currently in. */
-  chapterTitle: "Chapter 24",
-
-  /**
-   * Her birthday. Set these to switch on the live countdown in the
-   * hero ("X days until you turn another year older"). Months are
-   * 1-based. Leave 0 to keep the countdown hidden — the hero still
-   * works, it just shows the colophon instead.
-   */
-  birthday: {
-    month: 0 as number,
-    day: 0 as number,
-  },
+  nickname: "Potti",
 
   /** The song. Optional — a real file, or the generated ambient pad. */
   music: {
@@ -102,22 +84,9 @@ export const config = {
   // ─────────────────────────────────────────────
   hero: {
     eyebrow: "A birthday, made by hand",
-    /** Breaks the wax seal to reveal her name. */
-    sealLabel: "Break the seal",
     subtitle:
-      "A tribute to the smartest, kindest, and most extraordinary woman I know.",
-    /** Shown on the colophon line under the countdown. */
-    countdownPrefix: "Until you turn another year older",
+      "A tribute to the smartest, kindest, and most extraordinary woman I know. Move your cursor — the whole page leans in to meet you.",
     scrollCue: "Scroll, slowly",
-  },
-
-  // ─────────────────────────────────────────────
-  // THE JOURNEY — memorable milestones
-  // ─────────────────────────────────────────────
-  timeline: {
-    eyebrow: "The journey so far",
-    title: "Some moments deserve to be remembered.",
-    lede: "Not because they were loud — because they were ours.",
   },
 
   // ─────────────────────────────────────────────
@@ -134,18 +103,26 @@ export const config = {
   // THE GALLERY — the photos
   // ─────────────────────────────────────────────
   gallery: {
-    eyebrow: "The good ones",
+    eyebrow: "In every frame,",
     title: "A few of my favourites.",
-    lede: "Some of these are half out of focus. Those are my favourites.",
+    lede: "Half of them are slightly out of focus. Those are my favourites.",
     hint: "Tap any photo to see it properly",
-    /** How many photos to show in the strip (out of the six below). */
-    count: 4,
     /**
-     * The quote under the photos. Make it yours — this is the line
-     * underneath the photographs.
+     * A handful of nice quotes, shown beneath the photographs. Each
+     * renders on its own line. Make them yours.
      */
-    quote:
-      "Every photo here is a day I would happily live twice — the blurry ones especially.",
+    quotes: [
+      "I love you not only for what you are, but for what I am when I am with you.",
+      "There is no remedy for love, but to love more.",
+      "You are my today and all of my tomorrows.",
+    ],
+    /** A few quiet personal lines right under the quotes. */
+    lines: [
+      "Whenever I look at any of these photographs, I smile before I even remember why.",
+      "Thirty years from now, blurry or not — these will still be the days I'd relive.",
+    ],
+    /** The signed line underneath it all. */
+    signoff: "— yours, today and always",
     closeLabel: "Close",
     prevLabel: "Previous photo",
     nextLabel: "Next photo",
@@ -213,7 +190,7 @@ export const config = {
      * site, so make it count.
      */
     note:
-      "This is the placeholder note I typed while Sarah's person is deciding what to say. Just replace this paragraph in content.ts with the real words — nothing else needs to change.",
+      "This is the placeholder note. Replace this whole paragraph in content.ts with the real words — nothing else needs to change.",
   },
 
   // ─────────────────────────────────────────────
@@ -232,72 +209,38 @@ export const config = {
   // ─────────────────────────────────────────────
   timelineMoments: [
     {
-      date: "The First Spark",
-      title: "Where It All Began",
+      date: "Our first hello",
+      title: "Where it all began",
       description:
         "From the first conversation, it was obvious you operated on a completely different frequency. Witty, fiercely smart, and impossible to forget.",
       image: "/photos/how-we-met.jpg",
       tag: "The Beginning",
     },
     {
-      date: "The Unplanned Road Trip",
-      title: "Adventures & Bad Navigation",
+      date: "Lost, together",
+      title: "Anywhere with you",
       description:
         "Getting lost on backroads, playing our favorite albums on repeat, and realizing that anywhere with you instantly turns into the best story.",
       image: "/photos/first-date.jpg",
       tag: "Adventure",
     },
     {
-      date: "Celebrating Big Wins",
-      title: "Watching You Shine",
+      date: "Proud of you",
+      title: "Watching you shine",
       description:
         "Seeing you pour your heart into your goals and knock them out of the park. Nobody works harder or deserves every ounce of success more than you do.",
       image: "/photos/when-i-knew.jpg",
       tag: "Milestone",
     },
+    {
+      date: "Still being written",
+      title: "And now — today",
+      description:
+        "And this one is still being written. Tonight, and everything good that's coming after it. My favourite part of you is always the next chapter of you.",
+      image: "/photos/today.jpg",
+      tag: "Today",
+    },
   ] satisfies TimelineMoment[],
-
-  // ─────────────────────────────────────────────
-  // MEMORIES — Highlight Reel photo cards
-  // ─────────────────────────────────────────────
-  memories: [
-    {
-      image: "/photos/memory-1.jpg",
-      caption: "Candid smiles and coffee runs that lasted hours",
-      date: "Spring Memories",
-      tag: "Candid",
-    },
-    {
-      image: "/photos/memory-2.jpg",
-      caption: "Catching the golden hour in the middle of nowhere",
-      date: "Summer Escapes",
-      tag: "Road Trip",
-    },
-    {
-      image: "/photos/memory-3.jpg",
-      caption: "When an inside joke had us laughing until we couldn't breathe",
-      date: "Unfiltered Joy",
-      tag: "Favorite",
-    },
-    {
-      image: "/photos/memory-4.jpg",
-      caption: "Dressed up for the night, commanding every room you enter",
-      date: "Night Out",
-      tag: "Iconic",
-    },
-    {
-      image: "/photos/memory-5.jpg",
-      caption: "The quiet moments — quiet Sunday mornings and peaceful talks",
-      date: "Serenity",
-      tag: "Peace",
-    },
-    {
-      image: "/photos/memory-6.jpg",
-      caption: "Another unforgettable adventure locked into the memory bank",
-      date: "Best Days",
-      tag: "Adventure",
-    },
-  ] satisfies Memory[],
 
   // ─────────────────────────────────────────────
   // WHAT MAKES YOU EXTRAORDINARY (Traits celebrating her)
@@ -390,8 +333,7 @@ export const config = {
 /** Everything the app reads, in one type. */
 export type BirthdayConfig = typeof config;
 
-/** Photos referenced by the timeline and gallery, for preloading. */
+/** All photos on the page, for preloading. */
 export const allPhotoPaths: string[] = [
   ...config.timelineMoments.map((m) => m.image),
-  ...config.memories.map((m) => m.image),
 ];

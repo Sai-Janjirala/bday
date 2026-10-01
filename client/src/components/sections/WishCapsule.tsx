@@ -1,4 +1,4 @@
-/**
+﻿/**
  * WishCapsule — her turn.
  *
  * The one place in the experience where the visitor types, so it is
@@ -66,13 +66,13 @@ export default function WishCapsule() {
     <SectionShell
       id="capsule"
       tone="blush"
-      marker="VIII"
       eyebrow={config.capsule.eyebrow}
       title={config.capsule.title}
       lede={config.capsule.lede}
       spacing="tall"
     >
       <Flowers variant="blossom" className="-left-8 -bottom-6 w-36 opacity-55 sm:w-44" />
+      <Flowers variant="sprig" className="-top-10 -right-10 w-40 opacity-45 sm:w-48" />
 
       <div className="mt-4 grid items-center gap-12 lg:mt-8 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:gap-16">
         {/* ── The object ── */}

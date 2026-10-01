@@ -23,8 +23,6 @@ interface SectionShellProps {
   /** Vertical padding scale. */
   spacing?: "tight" | "default" | "tall";
   className?: string;
-  /** Sticky chapter marker rendered down the left edge on wide screens. */
-  marker?: string;
 }
 
 const SPACING = {
@@ -43,7 +41,6 @@ export default function SectionShell({
   align = "left",
   spacing = "default",
   className = "",
-  marker,
 }: SectionShellProps) {
   const reduced = useReducedMotion();
   const isNight = tone === "night";
@@ -59,23 +56,7 @@ export default function SectionShell({
       className={`relative isolate overflow-clip ${SPACING[spacing]} ${className}`}
       style={{ backgroundColor: toneBackground[tone] }}
     >
-      {/* Chapter numeral, parked in the margin on wide screens. */}
-      {marker && (
-        <span
-          aria-hidden="true"
-          className={`pointer-events-none absolute left-6 top-1/2 hidden -translate-y-1/2 font-display text-[6rem] leading-none lg:block xl:left-10 ${
-            isNight ? "text-porcelain/5" : "text-ink-text/5"
-          }`}
-        >
-          {marker}
-        </span>
-      )}
-
-      <div
-        className={`shell relative ${centered ? "text-center" : ""} ${
-          marker ? "lg:pl-16" : ""
-        }`}
-      >
+      <div className={`shell relative ${centered ? "text-center" : ""}`}>
         {(eyebrow || title || lede) && (
           <header
             className={`mb-12 sm:mb-16 ${centered ? "mx-auto max-w-2xl" : "max-w-3xl"}`}

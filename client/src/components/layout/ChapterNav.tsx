@@ -1,10 +1,10 @@
 /**
  * ChapterNav — the spine of the experience, made navigable.
  *
- * Two presentations of one idea. On wide screens a vertical rail of
- * numerals down the left margin, with the active chapter's label
- * revealed on hover. On small screens a slim strip under the progress
- * hairline where the chapters are tappable ticks.
+ * Two presentations of one idea. On wide screens a vertical rail down
+ * the left margin, with the active section's label revealed on hover.
+ * On small screens a slim strip under the progress hairline where the
+ * sections are tappable ticks.
  *
  * It only exists once the story has started, so the opening screen is
  * never crowded by furniture.
@@ -32,7 +32,7 @@ export default function ChapterNav({ activeId, visible }: ChapterNavProps) {
     <>
       {/* ── Wide screens: vertical rail ── */}
       <motion.nav
-        aria-label="Chapters"
+        aria-label="Sections"
         className="pointer-events-none fixed left-0 top-1/2 z-[60] hidden -translate-y-1/2 pl-5 lg:block xl:pl-7"
         initial={{ opacity: 0, x: -12 }}
         animate={visible ? { opacity: 1, x: 0 } : { opacity: 0, x: -12 }}
@@ -62,13 +62,6 @@ export default function ChapterNav({ activeId, visible }: ChapterNavProps) {
                     }`}
                   />
                   <span
-                    className={`font-display text-[0.7rem] tabular-nums transition-colors duration-300 ${
-                      isActive ? "text-ink-text" : "text-muted-light/70"
-                    }`}
-                  >
-                    {chapter.numeral}
-                  </span>
-                  <span
                     className={`max-w-0 overflow-hidden text-[0.625rem] font-medium tracking-[0.16em] whitespace-nowrap uppercase transition-all duration-500 ${
                       isActive
                         ? "max-w-[9rem] text-ink-text/70 opacity-100"
@@ -86,7 +79,7 @@ export default function ChapterNav({ activeId, visible }: ChapterNavProps) {
 
       {/* ── Small screens: tappable ticks under the hairline ── */}
       <motion.div
-        aria-label="Chapters"
+        aria-label="Sections"
         className="fixed inset-x-0 top-px z-[60] flex justify-center gap-1.5 px-4 pt-2 lg:hidden"
         initial={{ opacity: 0, y: -8 }}
         animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }}
@@ -99,7 +92,7 @@ export default function ChapterNav({ activeId, visible }: ChapterNavProps) {
               key={chapter.id}
               type="button"
               onClick={() => go(chapter.id)}
-              aria-label={`Chapter ${chapter.numeral}: ${chapter.label}`}
+              aria-label={chapter.label}
               aria-current={isActive ? "true" : undefined}
               className="focus-inset group grid h-8 min-w-6 flex-1 place-items-center"
             >

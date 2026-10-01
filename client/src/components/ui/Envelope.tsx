@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Envelope — the physical object, nothing else.
  *
  * Layering, back to front: back panel → interior → top flap → wax
@@ -32,7 +32,7 @@ const NOTCH = 58;
 export default function Envelope({
   open,
   onToggle,
-  monogram = "S",
+  monogram = "",
   openLabel,
   closeLabel,
   settled = false,

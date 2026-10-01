@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LoveLetter — the letter, and the thing the whole site was building to.
  *
  * One continuous motion: the flap lifts, the sheet rises out of the
@@ -16,6 +16,8 @@ import { config } from "../../config/content";
 import SectionShell from "../ui/SectionShell";
 import Envelope from "../ui/Envelope";
 import WaxSeal from "../ui/WaxSeal";
+import Flowers from "../ui/Flowers";
+import Stars from "../ui/Stars";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -28,13 +30,16 @@ export default function LoveLetter() {
     <SectionShell
       id="letter"
       tone="night"
-      marker="VII"
       align="center"
       eyebrow={config.letterSection.eyebrow}
       title={config.letterSection.title}
       lede={config.letterSection.lede}
       spacing="tall"
     >
+      <Stars count={46} />
+      <Flowers variant="rose" tone="night" className="-top-14 -left-12 w-48 opacity-40 sm:w-56" />
+      <Flowers variant="sprig" tone="night" className="-right-12 -bottom-10 w-44 opacity-35 sm:w-52" />
+
       {/* Warm light on the night background, so the paper reads as paper. */}
       <div
         aria-hidden="true"

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * WaxSeal — the recurring "this is sealed, open me" affordance.
  *
  * A pressed-metal disc with an embossed monogram. When it breaks it
@@ -9,7 +9,7 @@ import { motion, useReducedMotion } from "framer-motion";
 interface WaxSealProps {
   /** Broken or intact. */
   broken?: boolean;
-  /** Letters pressed into the wax. Defaults to her initial. */
+  /** Letters pressed into the wax. Empty = a plain unmarked seal. */
   monogram?: string;
   className?: string;
   size?: number;
@@ -19,7 +19,7 @@ interface WaxSealProps {
 
 export default function WaxSeal({
   broken = false,
-  monogram = "S",
+  monogram = "",
   className = "",
   size = 92,
   decorative = false,

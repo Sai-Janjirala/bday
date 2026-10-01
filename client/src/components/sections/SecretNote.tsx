@@ -1,4 +1,4 @@
-/**
+﻿/**
  * SecretNote — the last thing, and the whole point.
  *
  * The note is hidden under a film of scratched-over paper (drawn on a
@@ -156,7 +156,6 @@ export default function SecretNote() {
     <SectionShell
       id="secret"
       tone="linen"
-      marker="IX"
       eyebrow={config.secretNote.eyebrow}
       title={config.secretNote.title}
       lede={config.secretNote.lede}

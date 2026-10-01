@@ -27,7 +27,6 @@ import MusicToggle from "./components/layout/MusicToggle";
 
 import BirthdayIntro from "./components/sections/BirthdayIntro";
 import StoryHero from "./components/sections/StoryHero";
-import MemoryTimeline from "./components/sections/MemoryTimeline";
 import ReasonsSection from "./components/sections/ReasonsSection";
 import PhotoGallery from "./components/sections/PhotoGallery";
 import MakeAWish from "./components/sections/MakeAWish";
@@ -117,7 +116,7 @@ function Experience() {
     window.setTimeout(
       () => {
         document
-          .getElementById("moments")
+          .getElementById("reasons")
           ?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
       },
       reduced ? 0 : 1200,
@@ -159,7 +158,6 @@ function Experience() {
 
       <main>
         <StoryHero replayToken={replayToken} />
-        <MemoryTimeline />
         <ReasonsSection />
         <PhotoGallery />
         <MakeAWish />
