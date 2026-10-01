@@ -1,95 +1,121 @@
 /**
- * AnimatedText — Letter-by-letter or word-by-word text reveal
- * Used for romantic headings and emotional messages
+ * AnimatedText — typographic reveal.
+ *
+ * Letters rise out of a clipped line ("mask" mode) or simply resolve
+ * from blur ("blur" mode). Either way the *real* string is always in
+ * the DOM for screen readers — the animated spans are marked
+ * aria-hidden so nobody hears a word spelled out letter by letter.
  */
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 interface AnimatedTextProps {
   text: string;
-  /** Animation mode */
-  mode?: "letter" | "word" | "line";
+  /** `mask` clips each line as it rises; `blur` is the softer option. */
+  mode?: "mask" | "blur" | "word";
   className?: string;
-  /** Delay before animation starts */
   delay?: number;
-  /** Duration per character/word */
-  staggerDuration?: number;
-  /** HTML tag to render */
-  as?: "h1" | "h2" | "h3" | "p" | "span";
-  /** Trigger on scroll into view instead of on mount */
-  scrollTriggered?: boolean;
+  /** Seconds between each unit of animation. */
+  stagger?: number;
+  /** Animate on mount (default) or only when scrolled into view. */
+  trigger?: "mount" | "view";
+  /** Respect newlines in `text` as hard breaks. */
+  lines?: boolean;
 }
+
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function AnimatedText({
   text,
-  mode = "letter",
+  mode = "mask",
   className = "",
   delay = 0,
-  staggerDuration = 0.04,
-  as: Tag = "span",
-  scrollTriggered = false,
+  stagger = 0.028,
+  trigger = "mount",
+  lines = false,
 }: AnimatedTextProps) {
-  const items = mode === "letter"
-    ? text.split("")
-    : mode === "word"
-    ? text.split(" ")
-    : text.split("\n");
+  const reduced = useReducedMotion();
+
+  const groups = lines ? text.split("\n") : [text];
+  const units = (value: string) =>
+    mode === "word" ? value.split(/(\s+)/) : Array.from(value);
 
   const container = {
-    hidden: { opacity: 1 },
+    hidden: {},
     visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: staggerDuration,
-        delayChildren: delay,
-      },
+      transition: { staggerChildren: stagger, delayChildren: delay },
     },
   };
 
-  const child = {
-    hidden: {
-      opacity: 0,
-      y: mode === "line" ? 20 : 8,
-      filter: "blur(4px)",
+  const maskChild = {
+    hidden: { y: "112%" },
+    visible: {
+      y: "0%",
+      transition: { duration: 1.05, ease: EASE },
     },
+  };
+
+  const blurChild = {
+    hidden: { opacity: 0, y: 10, filter: "blur(8px)" },
     visible: {
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
-      transition: {
-        duration: mode === "line" ? 0.6 : 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
-      },
+      transition: { duration: 0.85, ease: EASE },
     },
   };
 
-  const viewportProps = scrollTriggered
-    ? { whileInView: "visible", viewport: { once: true, margin: "-80px" } }
-    : { animate: "visible" };
+  const variants = mode === "mask" ? maskChild : blurChild;
+
+  if (reduced) {
+    return <span className={className}>{text}</span>;
+  }
+
+  const triggerProps =
+    trigger === "view"
+      ? { whileInView: "visible" as const, viewport: { once: true, amount: 0.4 } }
+      : { animate: "visible" as const };
 
   return (
-    <motion.div
-      className={`inline-block ${className}`}
+    <motion.span
+      className={className}
       variants={container}
       initial="hidden"
-      {...viewportProps}
-      aria-label={text}
+      {...triggerProps}
     >
-      {items.map((item, index) => (
-        <motion.span
-          key={index}
-          variants={child}
-          className={`inline-block ${mode === "letter" && item === " " ? "mr-[0.25em]" : ""} ${
-            mode === "word" ? "mr-[0.3em]" : ""
-          } ${mode === "line" ? "block" : ""}`}
+      {groups.map((group, groupIndex) => (
+        <span
+          key={groupIndex}
+          className={`${lines ? "block" : "inline"} ${mode === "mask" ? "overflow-hidden" : ""}`}
+          style={mode === "mask" ? { paddingBottom: "0.08em" } : undefined}
         >
-          {/* Render as proper tag for SEO */}
-          {index === 0 && Tag !== "span" ? (
-            <Tag className={className}>{item}</Tag>
-          ) : (
-            item
-          )}
-        </motion.span>
+          {units(group).map((unit, unitIndex) => (
+            <span
+              key={unitIndex}
+              aria-hidden="true"
+              className={
+                mode === "mask"
+                  ? "inline-block will-change-transform"
+                  : "inline-block will-change-[opacity,transform,filter]"
+              }
+            >
+              <motion.span
+                variants={variants}
+                className={
+                  mode === "mask"
+                    ? "inline-block"
+                    : mode === "word" && /^\s+$/.test(unit)
+                      ? "inline-block w-[0.32em]"
+                      : "inline-block"
+                }
+              >
+                {unit === " " ? " " : unit}
+              </motion.span>
+            </span>
+          ))}
+        </span>
       ))}
-    </motion.div>
+      {/* The accessible copy of the string. */}
+      <span className="sr-only">{text.replace(/\n/g, " ")}</span>
+    </motion.span>
   );
 }

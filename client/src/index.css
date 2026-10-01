@@ -1,81 +1,115 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&family=Dancing+Script:wght@400;500;600;700&display=swap");
-@import "tailwindcss";
-
 /* ═══════════════════════════════════════════════════════════════
-   💝 ROMANTIC BIRTHDAY WEBSITE — Design Tokens & Global Styles
+   A BIRTHDAY, MADE BY HAND — Design System
+   Art direction: night-and-day. Deep plum ink for the cinematic
+   beats, warm porcelain for the breathing room in between.
+   Restrained rose and brushed brass as the only accents.
    ═══════════════════════════════════════════════════════════════ */
 
-/* ─── Tailwind v4 Theme ─── */
+@import "tailwindcss";
+
 @theme {
-  --color-blush: #F9E4E4;
-  --color-rose: #E8A0BF;
-  --color-rose-deep: #C45B7C;
-  --color-lavender: #D4B8E0;
-  --color-lavender-soft: #EDE4F0;
-  --color-cream: #FFF8F0;
-  --color-gold: #D4A853;
-  --color-gold-light: #F0D98D;
-  --color-soft-white: #FEFBF6;
-  --color-charcoal: #3A2D32;
-  --color-charcoal-light: #5C4A52;
-  --color-warm-gray: #8A7A80;
+  /* ── Night (cinematic sections) ── */
+  --color-ink: #241b22;
+  --color-ink-raised: #322630;
+  --color-ink-line: #453347;
 
-  --font-serif: "Playfair Display", Georgia, serif;
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-script: "Dancing Script", cursive;
+  /* ── Light (breathing sections) ── */
+  --color-porcelain: #fcf9f5;
+  --color-linen: #f4ede5;
+  --color-blush: #f8ecec;
 
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
-  --animate-shimmer: shimmer 3s ease-in-out infinite;
-  --animate-drift: drift 8s ease-in-out infinite;
-  --animate-sparkle: sparkle 1.5s ease-in-out infinite;
-  --animate-heartbeat: heartbeat 1.2s ease-in-out infinite;
+  /* ── Accents (used sparingly, never all at once) ── */
+  --color-rose: #b0657c;
+  --color-rose-deep: #8d4a5e;
+  --color-rose-mist: #e6ccd3;
+  --color-brass: #a98a56;
+  --color-brass-light: #d9c391;
+  --color-sage: #7d8a78;
+
+  /* ── Text ── */
+  --color-ink-text: #2b2129;
+  --color-muted: #6d5f67;
+  --color-muted-light: #948891;
+
+  --font-display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-script: "Dancing Script", "Segoe Script", cursive;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --animate-drift-slow: drift-slow 26s ease-in-out infinite;
+  --animate-breathe: breathe 6s ease-in-out infinite;
+  --animate-flicker: flicker 3.4s ease-in-out infinite;
+  --animate-float-soft: float-soft 9s ease-in-out infinite;
+  --animate-sheen: sheen 7s ease-in-out infinite;
 }
 
-/* ─── Keyframes ─── */
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-10px) rotate(1deg); }
-  66% { transform: translateY(-5px) rotate(-1deg); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(232, 160, 191, 0.3),
-                0 0 40px rgba(232, 160, 191, 0.1);
+@keyframes drift-slow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    box-shadow: 0 0 30px rgba(232, 160, 191, 0.5),
-                0 0 60px rgba(232, 160, 191, 0.2);
+    transform: translate3d(0, -18px, 0) scale(1.04);
   }
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.85;
+  }
 }
 
-@keyframes drift {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(20px, -20px) scale(1.05); }
-  50% { transform: translate(-10px, 10px) scale(0.95); }
-  75% { transform: translate(10px, 20px) scale(1.02); }
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 0.9;
+    transform: scaleY(1) translateX(0);
+  }
+  22% {
+    opacity: 0.78;
+    transform: scaleY(1.06) translateX(-0.4px);
+  }
+  47% {
+    opacity: 0.95;
+    transform: scaleY(0.97) translateX(0.3px);
+  }
+  71% {
+    opacity: 0.82;
+    transform: scaleY(1.04) translateX(-0.2px);
+  }
 }
 
-@keyframes sparkle {
-  0%, 100% { opacity: 0.4; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.2); }
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
 }
 
-@keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  14% { transform: scale(1.15); }
-  28% { transform: scale(1); }
-  42% { transform: scale(1.15); }
-  56% { transform: scale(1); }
+@keyframes sheen {
+  0%,
+  100% {
+    transform: translateX(-120%);
+  }
+  45%,
+  55% {
+    transform: translateX(120%);
+  }
 }
 
-/* ─── Base Styles ─── */
+/* ═══════════════════════════════════════════════════════════════
+   Base
+   ═══════════════════════════════════════════════════════════════ */
+
 *,
 *::before,
 *::after {
@@ -84,124 +118,242 @@
 
 html {
   scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  /* `clip` instead of `hidden` — clips overflow without creating a
+     scroll container, which would break `position: sticky` children. */
+  overflow-x: clip;
 }
 
 body {
-  font-family: var(--font-sans);
-  color: var(--color-charcoal);
-  background-color: var(--color-soft-white);
   margin: 0;
-  padding: 0;
-  overflow-x: hidden;
+  min-height: 100%;
+  overflow-x: clip;
+  background-color: var(--color-ink);
+  color: var(--color-ink-text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* ─── Scrollbar Styling ─── */
-::-webkit-scrollbar {
-  width: 6px;
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  margin: 0;
+  text-wrap: balance;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--color-cream);
+p {
+  text-wrap: pretty;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--color-rose);
-  border-radius: 100px;
+img,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-rose-deep);
+button {
+  font: inherit;
+  color: inherit;
 }
 
-/* ─── Selection Color ─── */
 ::selection {
-  background-color: rgba(232, 160, 191, 0.3);
-  color: var(--color-charcoal);
+  background: var(--color-rose-mist);
+  color: var(--color-ink-text);
 }
 
-/* ─── Glass Card Utility ─── */
-.glass-card {
-  background: rgba(255, 248, 240, 0.55);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(200, 160, 180, 0.12);
+:focus-visible {
+  outline: 2px solid var(--color-rose);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
-.glass-card-dark {
-  background: rgba(196, 91, 124, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(232, 160, 191, 0.2);
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(200, 160, 180, 0.15);
+/* Keyboard users get a clear ring; pointer users never see it. */
+.focus-inset:focus-visible {
+  outline-offset: -3px;
 }
 
-/* ─── Grain/Noise Overlay ─── */
-.grain-overlay::after {
+/* ═══════════════════════════════════════════════════════════════
+   Surfaces
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Film grain — one fixed layer for the whole document. */
+.grain::after {
   content: "";
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
+  z-index: 60;
   pointer-events: none;
-  z-index: 9999;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ─── Gradient Blobs ─── */
-.gradient-blob {
+.grain-dark::after {
+  mix-blend-mode: soft-light;
+  opacity: 0.06;
+}
+
+/* Soft, wide light sources — not blobby "AI gradient" circles. */
+.aura {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
-  opacity: 0.3;
+  border-radius: 9999px;
+  filter: blur(90px);
   pointer-events: none;
+  will-change: transform, opacity;
 }
 
-/* ─── Text Gradient ─── */
-.text-gradient-romantic {
-  background: linear-gradient(135deg, var(--color-rose-deep), var(--color-rose), var(--color-lavender));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* ═══════════════════════════════════════════════════════════════
+   Typography utilities
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Small caps label used above every section title. Keeps the
+   sections feeling like chapters of one book, not separate sites. */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  line-height: 1.4;
 }
 
-/* ─── Smooth Section Transitions ─── */
-.section-transition {
-  transition: background-color 0.8s ease-in-out;
+.rule {
+  height: 1px;
+  background: currentColor;
+  opacity: 0.16;
+  transform-origin: left center;
 }
 
-/* ─── Image Placeholder ─── */
-.photo-placeholder {
-  background: linear-gradient(135deg, var(--color-blush), var(--color-lavender-soft), var(--color-cream));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-rose);
+/* Long-form reading measure for the letter. */
+.prose-letter {
+  font-family: var(--font-display);
+  font-size: clamp(1.0625rem, 0.95rem + 0.55vw, 1.3125rem);
+  line-height: 1.78;
+  letter-spacing: 0.004em;
+}
+
+.hand {
   font-family: var(--font-script);
-  font-size: 1.1rem;
-  border-radius: 16px;
-  overflow: hidden;
-  position: relative;
+  line-height: 1.2;
 }
 
-.photo-placeholder::after {
-  content: "📷 Photo coming soon";
-  position: absolute;
-  opacity: 0.6;
-}
+/* ═══════════════════════════════════════════════════════════════
+   Layout helpers
+   ═══════════════════════════════════════════════════════════════ */
 
-/* Photo placeholder that shows real image if available */
-.photo-placeholder img {
+.shell {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .shell {
+    padding-inline: 2.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .shell {
+    padding-inline: 3.5rem;
+  }
+}
+
+/* Deliberately offset from centre so sections don't all read
+   as the same centred block. */
+.shell-editorial {
+  width: 100%;
+  max-width: 68rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .shell-editorial {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* Horizontal rails: touch-native, momentum scrolling, no visible bar. */
+.rail {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+/* Lift a real image out of its frame on hover, and on tap. */
+.zoom-frame {
   position: relative;
-  z-index: 1;
+  overflow: hidden;
+  background: var(--color-linen);
+}
+
+.zoom-frame img {
+  transition: transform 1.1s var(--ease-out-expo);
+  will-change: transform;
+}
+
+@media (hover: hover) {
+  .group:hover .zoom-frame img {
+    transform: scale(1.055);
+  }
+}
+
+/* Paper edge for letterpress-style surfaces. */
+.paper-edge {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 18px 40px -28px rgba(43, 33, 41, 0.35);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Reduced motion
+   Everything above is decorative. When the visitor asks for less
+   motion we keep fades (which communicate state) and drop
+   transforms, loops and parallax entirely.
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .zoom-frame img {
+    transform: none !important;
+  }
+}
+
+/* Utility for when JS has detected reduced motion, mirroring the
+   media query so components can branch without a media query. */
+.reduce-motion .aura,
+.reduce-motion [data-decorative] {
+  animation: none !important;
 }
