@@ -17,8 +17,6 @@ export interface Chapter {
 export const chapters: Chapter[] = [
   { id: "opening", label: "The Day", tone: "light" },
   { id: "photos", label: "Photos", tone: "light" },
-  { id: "secret", label: "The Secret", tone: "linen" },
-  { id: "special", label: "Why You", tone: "night" },
   { id: "wish", label: "The Wish", tone: "night" },
   { id: "letter", label: "The Letter", tone: "night" },
   { id: "birthday", label: "Happy Birthday", tone: "night" },

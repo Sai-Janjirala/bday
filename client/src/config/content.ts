@@ -93,52 +93,27 @@ export const config = {
   },
 
   // ─────────────────────────────────────────────
-  // CHAPTER 3 — THE GOLDEN SCRATCH CARD (Secret Memory)
-  // ─────────────────────────────────────────────
-  secret: {
-    chapter: "Chapter III",
-    eyebrow: "A secret just for you",
-    title: "Something hidden in gold.",
-    lede: "Use your finger to scratch away the shimmering gold foil and reveal a private message, written just for you.",
-    revealHint: "Rub with your finger to scratch away the gold",
-    secretNote:
-      "If I could give you one gift this year, it would be the ability to see yourself through my eyes — so you'd finally understand how truly brilliant, radiant, and deeply cherished you are. Every. Single. Day.",
-    badge: "Private Message",
-    revealedTitle: "Kept in heart & ink",
-  },
-
-  // ─────────────────────────────────────────────
-  // CHAPTER 4 — WHY YOU'RE SPECIAL (Appreciation Cards)
-  // ─────────────────────────────────────────────
-  appreciation: {
-    chapter: "Chapter IV",
-    eyebrow: "The things I love about you",
-    title: "What makes you, you.",
-    lede: "Some things are impossible to put into words. But I tried. Tap each card to find out what I think.",
-  },
-
-  // ─────────────────────────────────────────────
-  // CHAPTER 5 — THE WISH (Interactive Candle Ritual)
+  // CHAPTER 3 — THE WISH (Interactive Candle Ritual)
   // ─────────────────────────────────────────────
   wish: {
-    chapter: "Chapter V",
+    chapter: "Chapter III",
     eyebrow: "A ritual for the year ahead",
     title: "Make a wish.\nBlow out the candles.",
-    lede: "Hold the ring until the circle fills — or tap each flame one by one. Then close your eyes. Make it count.",
-    holdLabel: "Hold to send your wish",
-    holdingLabel: "Sending your wish to the stars…",
-    tapBlowLabel: "Or tap each flame to blow it out",
+    lede: "Blow into your microphone, swipe across the flames, or tap each candle to extinguish it. Close your eyes and make a wish!",
+    holdLabel: "Hold to blow all candles",
+    holdingLabel: "Blowing out the candles with love…",
+    tapBlowLabel: "🎤 Blow into microphone, swipe across flames, or tap candles",
     blown: "May every quiet wish come true.",
     blownBody:
       "Your wish has been whispered to the night sky. May this year bring you unshakeable peace, hard-earned victories, and every quiet dream you've been holding close.",
-    again: "Light them once more",
+    again: "Relight the candles",
   },
 
   // ─────────────────────────────────────────────
-  // CHAPTER 5 — THE LETTER (Unfolding Envelope)
+  // CHAPTER 4 — THE LETTER (Unfolding Envelope)
   // ─────────────────────────────────────────────
   letterSection: {
-    chapter: "Chapter VI",
+    chapter: "Chapter IV",
     eyebrow: "Words kept in ink",
     title: "A letter, written for you.",
     lede: "Sealed carefully and kept safe. Tap to break the seal and read what's inside.",

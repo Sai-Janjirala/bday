@@ -47,7 +47,7 @@ export default function FinalReveal({ onReplay }: FinalRevealProps) {
     if (!inView || fireworksFired || reduced) return;
     setFireworksFired(true);
 
-    const fireConfetti = (particleRatio: number, opts: confetti.Options) => {
+    const fireConfetti = (particleRatio: number, opts: Record<string, unknown>) => {
       confetti({
         ...opts,
         origin: { y: 0.6 },

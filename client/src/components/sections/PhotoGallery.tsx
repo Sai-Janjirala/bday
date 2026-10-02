@@ -9,7 +9,7 @@
  */
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { config, type TimelineMoment } from "../../config/content";
+import { config } from "../../config/content";
 import { useChimeSound } from "../../hooks/useChimeSound";
 import SectionShell from "../ui/SectionShell";
 import PhotoPlaceholder from "../ui/PhotoPlaceholder";
