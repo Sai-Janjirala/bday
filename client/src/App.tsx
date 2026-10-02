@@ -26,6 +26,8 @@ import ChapterNav from "./components/layout/ChapterNav";
 import BirthdayIntro from "./components/sections/BirthdayIntro";
 import StoryHero from "./components/sections/StoryHero";
 import PhotoGallery from "./components/sections/PhotoGallery";
+import ScratchCard from "./components/sections/ScratchCard";
+import WhySpecial from "./components/sections/WhySpecial";
 import MakeAWish from "./components/sections/MakeAWish";
 import LoveLetter from "./components/sections/LoveLetter";
 import FinalReveal from "./components/sections/FinalReveal";
@@ -140,6 +142,8 @@ function Experience() {
       <main>
         <StoryHero replayToken={replayToken} />
         <PhotoGallery />
+        <ScratchCard />
+        <WhySpecial />
         <MakeAWish />
         <LoveLetter />
         <FinalReveal onReplay={replay} />

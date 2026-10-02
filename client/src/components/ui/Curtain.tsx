@@ -205,9 +205,9 @@ export default function Curtain({ ready, onOpen }: CurtainProps) {
           transformOrigin: "center top",
         }}
       >
-        {/* Keepsake Ribbon Tag */}
+        {/* Floating badge */}
         <motion.div
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-brass-light/30 bg-porcelain/5 px-4 py-1.5 shadow-sm backdrop-blur-md"
+          className="mb-6 inline-flex items-center gap-2 rounded-full border border-brass-light/30 bg-porcelain/8 px-4 py-1.5 shadow-sm backdrop-blur-md"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -218,63 +218,88 @@ export default function Curtain({ ready, onOpen }: CurtainProps) {
 
         {/* Main Heading */}
         <h1 className="max-w-2xl text-balance">
-          <span className="block font-display text-[clamp(2.3rem,1.4rem+3.4vw,4rem)] leading-[1.12] text-porcelain/95">
+          <span className="block font-display text-[clamp(2.6rem,1.4rem+4.2vw,5.2rem)] leading-[1.08] text-porcelain/95">
             <AnimatedText text={config.intro.firstLine} delay={0.2} stagger={0.04} />
           </span>
-          <span className="mt-3 block font-display text-[clamp(1.65rem,1.2rem+2.2vw,2.8rem)] leading-[1.2] font-light text-porcelain/70 italic">
+          <span className="mt-3 block font-display text-[clamp(1.4rem,1rem+2.2vw,2.6rem)] leading-[1.25] font-light text-porcelain/65 italic">
             <AnimatedText
               text={config.intro.secondLine}
               mode="blur"
-              delay={0.65}
-              stagger={0.02}
+              delay={0.75}
+              stagger={0.025}
             />
           </span>
         </h1>
 
         {/* ── Interactive 3D Golden Wax Seal & Pull Prompt ── */}
-        <div className="mt-10 flex flex-col items-center gap-4">
+        <div className="mt-12 flex flex-col items-center gap-5">
           {ready ? (
             <motion.div
-              className="flex flex-col items-center gap-4"
-              initial={{ opacity: 0, scale: 0.9 }}
+              className="flex flex-col items-center gap-5"
+              initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             >
-              {/* Interactive Wax Seal Button */}
+              {/* Interactive Wax Seal Button with strong pulse */}
               <button
                 type="button"
                 onClick={handleSealClick}
                 onMouseEnter={() => setIsHoveringSeal(true)}
                 onMouseLeave={() => setIsHoveringSeal(false)}
-                aria-label="Break wax seal and open the birthday keepsake"
-                className="group relative cursor-pointer outline-none transition-transform duration-500 hover:scale-105 active:scale-95"
+                aria-label="Open your birthday surprise"
+                className="group relative cursor-pointer outline-none transition-transform duration-500 active:scale-90"
               >
-                {/* Golden Halo Glow on hover */}
+                {/* Rippling pulse rings */}
+                {!reduced && (
+                  <>
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        animation: "ripple 2.4s ease-out infinite",
+                        background: "radial-gradient(circle, rgba(217,195,145,0.3) 0%, transparent 70%)",
+                      }}
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        animation: "ripple 2.4s ease-out 0.8s infinite",
+                        background: "radial-gradient(circle, rgba(183,110,121,0.25) 0%, transparent 70%)",
+                      }}
+                    />
+                  </>
+                )}
+
+                {/* Golden Halo Glow */}
                 <div
                   aria-hidden="true"
-                  className="absolute -inset-4 rounded-full opacity-60 blur-xl transition-opacity duration-500 group-hover:opacity-100"
+                  className="absolute -inset-6 rounded-full opacity-50 blur-2xl transition-opacity duration-500 group-hover:opacity-80"
                   style={{
                     background:
-                      "radial-gradient(circle, rgba(217,195,145,0.4) 0%, rgba(183,110,121,0.2) 50%, transparent 70%)",
+                      "radial-gradient(circle, rgba(217,195,145,0.5) 0%, rgba(183,110,121,0.25) 50%, transparent 70%)",
                   }}
                 />
 
-                {/* Wax Seal Component with custom size */}
-                <div className="relative shadow-[0_12px_32px_rgba(0,0,0,0.6)] rounded-full">
-                  <WaxSeal size={96} monogram="★" />
+                {/* Wax Seal */}
+                <div className="relative shadow-[0_12px_40px_rgba(0,0,0,0.65)] rounded-full">
+                  <WaxSeal size={104} monogram="★" />
                 </div>
 
-                {/* Subtle Ribbon Tail behind seal */}
+                {/* Ribbon tail */}
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute -bottom-3 left-1/2 -translate-x-1/2 h-6 w-12 rounded-b-md bg-gradient-to-b from-[#8d4a5e] to-[#5a2e3c] opacity-80 shadow-md"
+                  className="pointer-events-none absolute -bottom-3 left-1/2 -translate-x-1/2 h-7 w-14 rounded-b-md bg-gradient-to-b from-[#8d4a5e] to-[#5a2e3c] opacity-80 shadow-md"
                   style={{ clipPath: "polygon(0 0, 100% 0, 85% 100%, 50% 70%, 15% 100%)" }}
                 />
               </button>
 
-              {/* Intuitive Drag & Tap Hint */}
-              <div className="mt-2 flex flex-col items-center gap-1.5">
-                <p className="eyebrow flex items-center gap-2 text-porcelain/90">
+              {/* CTA Text */}
+              <div className="flex flex-col items-center gap-1.5">
+                <p className="font-display text-[1.1rem] text-porcelain/90 italic">
+                  {isDragging ? "Keep going…" : isHoveringSeal ? "Tap to open" : config.intro.prompt}
+                </p>
+                <p className="eyebrow flex items-center gap-2 text-porcelain/50">
                   <motion.span
                     animate={reduced ? {} : { y: [0, -4, 0] }}
                     transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
@@ -282,9 +307,9 @@ export default function Curtain({ ready, onOpen }: CurtainProps) {
                   >
                     ↑
                   </motion.span>
-                  {isDragging ? "Keep dragging up…" : isHoveringSeal ? "Click seal to open" : config.intro.dragHint}
+                  {config.intro.dragHint}
                 </p>
-                <p className="text-[0.625rem] tracking-[0.16em] text-porcelain/40 uppercase">
+                <p className="mt-1 text-[0.6rem] tracking-[0.16em] text-porcelain/30 uppercase">
                   {config.intro.keyboardPrompt}
                 </p>
               </div>

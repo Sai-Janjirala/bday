@@ -5,7 +5,8 @@
  * tap-anywhere rising heart blooms, and a quiet replay invitation.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useInView } from "framer-motion";
+import confetti from "canvas-confetti";
 import { config } from "../../config/content";
 import { todayLabel } from "../../lib/date";
 import AnimatedText from "../ui/AnimatedText";
@@ -35,8 +36,45 @@ let bloomSeed = 0;
 export default function FinalReveal({ onReplay }: FinalRevealProps) {
   const reduced = useReducedMotion();
   const [petalsOn, setPetalsOn] = useState(false);
+  const [fireworksFired, setFireworksFired] = useState(false);
   const [blooms, setBlooms] = useState<Bloom[]>([]);
   const timers = useRef<number[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInView(sectionRef, { once: true, amount: 0.4 });
+
+  // Fire confetti fireworks when section comes into view
+  useEffect(() => {
+    if (!inView || fireworksFired || reduced) return;
+    setFireworksFired(true);
+
+    const fireConfetti = (particleRatio: number, opts: confetti.Options) => {
+      confetti({
+        ...opts,
+        origin: { y: 0.6 },
+        particleCount: Math.floor(200 * particleRatio),
+        disableForReducedMotion: true,
+      });
+    };
+
+    // Staggered bursts for drama
+    const delay1 = window.setTimeout(() => {
+      fireConfetti(0.25, { spread: 26, startVelocity: 55, colors: ["#b0657c", "#d9c391", "#fcf9f5"] });
+    }, 600);
+    const delay2 = window.setTimeout(() => {
+      fireConfetti(0.2, { spread: 60, colors: ["#a98a56", "#f8ecec", "#e6ccd3"] });
+    }, 1100);
+    const delay3 = window.setTimeout(() => {
+      fireConfetti(0.35, { spread: 100, decay: 0.91, scalar: 0.8, colors: ["#b0657c", "#d9c391", "#7d8a78"] });
+      fireConfetti(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2, colors: ["#fcf9f5", "#b0657c"] });
+      fireConfetti(0.1, { spread: 120, startVelocity: 45, colors: ["#a98a56", "#fcf9f5"] });
+    }, 1700);
+
+    return () => {
+      window.clearTimeout(delay1);
+      window.clearTimeout(delay2);
+      window.clearTimeout(delay3);
+    };
+  }, [inView, fireworksFired, reduced]);
 
   useEffect(() => {
     const pending = timers.current;
@@ -79,6 +117,7 @@ export default function FinalReveal({ onReplay }: FinalRevealProps) {
       className="relative cursor-pointer"
     >
       <section
+        ref={sectionRef}
         id="birthday"
         aria-labelledby="finale-title"
         data-tone="night"

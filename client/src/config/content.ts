@@ -4,9 +4,7 @@
  * ═══════════════════════════════════════════════════════════════
  *
  * ✏️ HOW TO CUSTOMIZE:
- * To customize for your special person, simply replace "[Her Name]"
- * below with her real name (e.g. "Sarah", "Sophia", "Potti", etc.)!
- * All personal text, memories, letter paragraphs, and quotes live here.
+ * Edit the values below to personalize this experience!
  */
 
 export interface TimelineMoment {
@@ -18,35 +16,42 @@ export interface TimelineMoment {
   tag: string;
 }
 
-export const config = {
-  /** 
-   * 🌟 HER NAME — Replace "[Her Name]" with her actual name!
-   */
-  herName: "[Her Name]",
+export interface AppreciationCard {
+  emoji: string;
+  label: string;
+  message: string;
+  color: string;
+}
 
-  /** 
-   * 💖 NICKNAME — Replace with her pet name or leave as her name
+export const config = {
+  /**
+   * 🌟 HER NAME
    */
-  nickname: "[Her Name]",
+  herName: "Potti",
+
+  /**
+   * 💖 NICKNAME
+   */
+  nickname: "Potti",
 
   // ─────────────────────────────────────────────
   // THE LANDING PAGE & ARRIVAL
   // ─────────────────────────────────────────────
   intro: {
-    badge: "A Handmade Keepsake",
-    firstLine: "Hey, [Her Name]…",
-    secondLine: "A bespoke keepsake book, bound just for you.",
-    prompt: "Pull up the golden ribbon or press the seal to open",
+    badge: "A Little Surprise For You",
+    firstLine: "Hey, Potti…",
+    secondLine: "Someone made this just for you. ✨",
+    prompt: "Open your surprise",
     dragHint: "Pull up to open",
-    tapHint: "Tap or hold the wax seal",
-    keyboardPrompt: "Press Space, Enter, or ↑ to open",
+    tapHint: "Tap the seal to open",
+    keyboardPrompt: "Press Space or Enter to open",
     sealText: "FOR YOU",
-    /** Honest rotating status cues while fonts and photos warm up */
+    /** Rotating status cues while fonts and photos warm up */
     loadingCues: [
-      "Binding the pages with silk thread…",
-      "Pressing blossoms into the margins…",
-      "Lighting the candlelight…",
-      "Preparing your birthday surprise…",
+      "Tying the ribbon with love…",
+      "Pressing flowers into the pages…",
+      "Lighting the candles…",
+      "Almost ready for you…",
     ],
   },
 
@@ -55,12 +60,12 @@ export const config = {
   // ─────────────────────────────────────────────
   hero: {
     chapter: "Chapter I",
-    eyebrow: "A birthday keepsake, bound by hand",
+    eyebrow: "Today is your day",
     titlePrefix: "Happy Birthday,",
     subtitle:
-      "A celebration of the smartest, kindest, and most captivating soul I know. Scroll slowly — every page of this keepsake was handcrafted to celebrate you.",
-    scrollCue: "Turn the page ↓",
-    tagline: "Every story is better because you are in it.",
+      "Today isn't just another day — it's the day the world got a little brighter. This entire experience was made, crafted, and poured into just for you. Scroll slowly. ❤️",
+    scrollCue: "Continue the story ↓",
+    tagline: "Every story is better because you're in it.",
   },
 
   // ─────────────────────────────────────────────
@@ -69,17 +74,17 @@ export const config = {
   gallery: {
     chapter: "Chapter II",
     eyebrow: "Captured in time",
-    title: "Pages from our favourite days.",
-    lede: "Like pressed flowers kept between antique pages, each memory is a treasure. Tap any print to flip it and read the private note on the back.",
+    title: "Our favourite moments.",
+    lede: "Like pressed flowers kept between old pages — each memory is a treasure. Tap any photo to flip it and read the private note on the back.",
     hint: "Tap any print to flip or inspect",
     quotes: [
-      "In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine.",
-      "The best moments in life aren't planned — they are the ones spent laughing with you.",
+      "In all the world, there is no heart for me like yours.",
+      "The best moments aren't planned — they're the ones spent laughing with you.",
       "You make every ordinary second feel like timeless poetry.",
     ],
     lines: [
-      "Looking through these photographs, I realize how much brighter the world has felt since the day you entered it.",
-      "Years from now, no matter where life leads us, these will always remain the memories I treasure most.",
+      "Looking through these moments, I realize how much brighter the world has felt.",
+      "These will always remain the memories I treasure most.",
     ],
     signoff: "— with all my love, today and every day after",
     closeLabel: "Close",
@@ -92,30 +97,40 @@ export const config = {
   // ─────────────────────────────────────────────
   secret: {
     chapter: "Chapter III",
-    eyebrow: "A secret postscript",
+    eyebrow: "A secret just for you",
     title: "Something hidden in gold.",
-    lede: "Use your finger or mouse to scratch away the shimmering gold foil and reveal a private message.",
-    revealHint: "Rub with your cursor or finger to scratch",
+    lede: "Use your finger to scratch away the shimmering gold foil and reveal a private message, written just for you.",
+    revealHint: "Rub with your finger to scratch away the gold",
     secretNote:
-      "If I could give you one gift this year, it would be the ability to see yourself through my eyes — so you would finally understand how truly brilliant, radiant, and deeply cherished you are every single day.",
-    badge: "Certified Keepsake",
-    revealedTitle: "Kept in ink & heart",
+      "If I could give you one gift this year, it would be the ability to see yourself through my eyes — so you'd finally understand how truly brilliant, radiant, and deeply cherished you are. Every. Single. Day.",
+    badge: "Private Message",
+    revealedTitle: "Kept in heart & ink",
   },
 
   // ─────────────────────────────────────────────
-  // CHAPTER 4 — THE WISH (Interactive Candle Ritual)
+  // CHAPTER 4 — WHY YOU'RE SPECIAL (Appreciation Cards)
+  // ─────────────────────────────────────────────
+  appreciation: {
+    chapter: "Chapter IV",
+    eyebrow: "The things I love about you",
+    title: "What makes you, you.",
+    lede: "Some things are impossible to put into words. But I tried. Tap each card to find out what I think.",
+  },
+
+  // ─────────────────────────────────────────────
+  // CHAPTER 5 — THE WISH (Interactive Candle Ritual)
   // ─────────────────────────────────────────────
   wish: {
-    chapter: "Chapter IV",
+    chapter: "Chapter V",
     eyebrow: "A ritual for the year ahead",
     title: "Make a wish.\nBlow out the candles.",
-    lede: "Hold the flame until the starlight circle fills — or blow out each candle one by one with a tap.",
+    lede: "Hold the ring until the circle fills — or tap each flame one by one. Then close your eyes. Make it count.",
     holdLabel: "Hold to send your wish",
-    holdingLabel: "Holding your wish in the stars…",
-    tapBlowLabel: "Tap any candle to blow it out",
+    holdingLabel: "Sending your wish to the stars…",
+    tapBlowLabel: "Or tap each flame to blow it out",
     blown: "May every quiet wish come true.",
     blownBody:
-      "Your wish has been whispered to the night sky. May this new year bring you unshakeable peace, triumphant victories, genuine happiness, and all the quiet dreams you keep close to your heart.",
+      "Your wish has been whispered to the night sky. May this year bring you unshakeable peace, hard-earned victories, and every quiet dream you've been holding close.",
     again: "Light them once more",
   },
 
@@ -123,25 +138,25 @@ export const config = {
   // CHAPTER 5 — THE LETTER (Unfolding Envelope)
   // ─────────────────────────────────────────────
   letterSection: {
-    chapter: "Chapter V",
+    chapter: "Chapter VI",
     eyebrow: "Words kept in ink",
-    title: "A handwritten letter for you.",
-    lede: "Folded carefully into antique paper and sealed with wax. Tap to break the seal and unfold.",
-    sealedFor: "Handcrafted for",
-    openLabel: "Break the seal & unfold",
+    title: "A letter, written for you.",
+    lede: "Sealed carefully and kept safe. Tap to break the seal and read what's inside.",
+    sealedFor: "Handwritten for",
+    openLabel: "Break the seal & read",
     reseal: "Fold the letter back up",
   },
 
   letter: {
-    salutation: "Dearest [Her Name],",
+    salutation: "Dearest Potti,",
     bodyParagraphs: [
-      "Another year wiser, bolder, and more extraordinarily radiant. Taking a quiet moment to reflect on who you are and all you have navigated over this past year fills me with immense admiration.",
-      "You carry yourself with a rare combination of grit, sharp intellect, and graceful warmth. Whether you are chasing down ambitious goals or sharing late-night laughter, your presence brings clarity, comfort, and undeniable light to everyone around you.",
-      "As you turn this page and step into your next chapter, my wish for you is simple: I hope this year rewards your hard work with peace of mind, surrounds you with people who uplift you, and brings you countless reasons to smile until your cheeks hurt.",
-      "I am tremendously proud of who you are, deeply lucky to share life's moments with you, and always in your corner cheering you on through every triumph and every dream.",
+      "Another year. And with every passing year, you seem to grow into yourself more — bolder, softer, sharper, and somehow even more you than before. Taking a moment to reflect on everything you've navigated this year fills me with the kind of pride that's hard to put into words.",
+      "You carry yourself with this rare combination of grit and warmth that most people spend their whole lives trying to find. Whether you're chasing goals or just showing up for the people you love, you bring something to every room that's impossible to replicate.",
+      "As you step into this new year, my wish for you is simple: I hope it rewards everything you've poured into it. I hope it brings you moments of genuine rest, genuine joy, and genuine pride in who you're becoming.",
+      "I'm in your corner — always. Cheering louder than you can hear. Prouder than you know.",
     ],
-    signoff: "Always cheering for you & holding you dear,",
-    signature: "With all my love & respect",
+    signoff: "Always yours, always cheering —",
+    signature: "With all my love",
   },
 
   // ─────────────────────────────────────────────
@@ -152,9 +167,9 @@ export const config = {
     eyebrow: "The final page, for now",
     title: "Happy Birthday,",
     closing:
-      "Thank you for being the sweetest melody in every memory and the brightest light in every room. Here is to celebrating you today, tomorrow, and across every chapter yet to come.",
+      "Some people make ordinary days feel extraordinary. You're one of those people. Thank you for being you — today, and every day that comes after this one.",
     replay: "Return to the beginning",
-    heartsPrompt: "Tap anywhere to send up a bloom of celestial starlight",
+    heartsPrompt: "Tap anywhere to send up hearts ❤️",
   },
 
   // ─────────────────────────────────────────────
@@ -167,7 +182,7 @@ export const config = {
       description:
         "The very first conversation — witty, unforgettable, and an instant spark that changed everything.",
       backNote:
-        "I still remember the first thing you said. I knew right then and there that you were someone extraordinarily rare.",
+        "I still remember the first thing you said. I knew right then that you were someone extraordinarily rare.",
       image: "/photos/how-we-met.jpg",
       tag: "Chapter I",
     },
@@ -175,9 +190,9 @@ export const config = {
       date: "Unfiltered Laughter",
       title: "Adventures & quiet drives",
       description:
-        "Singing along to our favorite songs off-key and discovering that anywhere with you is an adventure.",
+        "Singing off-key to our favourite songs and discovering that anywhere with you is an adventure.",
       backNote:
-        "Lost on backroads, talking about everything and nothing. That day was the easiest, happiest memory.",
+        "Lost somewhere, talking about everything and nothing. That was the happiest, easiest memory.",
       image: "/photos/first-date.jpg",
       tag: "Chapter II",
     },
@@ -185,9 +200,9 @@ export const config = {
       date: "Pure Pride",
       title: "Watching you conquer",
       description:
-        "Seeing your dedication, your sharp mind, and the effortless grace you bring to every challenge you tackle.",
+        "Seeing your dedication, your sharp mind, and the effortless grace you bring to every challenge.",
       backNote:
-        "Nobody works harder or cares deeper than you do. Watching you succeed is one of my greatest joys.",
+        "Nobody works harder or cares more deeply than you do. Watching you succeed is one of my greatest joys.",
       image: "/photos/when-i-knew.jpg",
       tag: "Chapter III",
     },
@@ -195,13 +210,61 @@ export const config = {
       date: "Today & Tomorrow",
       title: "The pages ahead",
       description:
-        "Celebrating the extraordinary person you are today, and eagerly anticipating all the magic the coming year holds.",
+        "Celebrating the extraordinary person you are today, and eagerly anticipating all the magic this next year holds.",
       backNote:
-        "The best chapter of your life is the one we are writing right now. Happy Birthday, my favorite person.",
+        "The best chapter of your life is the one we're writing right now. Happy Birthday, my favourite person.",
       image: "/photos/today.jpg",
       tag: "Chapter IV",
     },
   ] satisfies TimelineMoment[],
+
+  // ─────────────────────────────────────────────
+  // APPRECIATION CARDS — Why She's Special
+  // ─────────────────────────────────────────────
+  appreciationCards: [
+    {
+      emoji: "✨",
+      label: "That smile",
+      message:
+        "There's something about your smile that makes even the most ordinary moment feel like magic. It's the kind of smile that stays with people long after you've left the room.",
+      color: "rose",
+    },
+    {
+      emoji: "💡",
+      label: "Your brilliance",
+      message:
+        "The way your mind works — the questions you ask, the connections you make, the clarity you bring to everything — genuinely impresses me. You're sharper than you give yourself credit for.",
+      color: "brass",
+    },
+    {
+      emoji: "🌿",
+      label: "Your kindness",
+      message:
+        "You care about people in a way that's increasingly rare. Not just when it's convenient. Not just when it's noticed. You just genuinely care. That's one of the most beautiful things about you.",
+      color: "sage",
+    },
+    {
+      emoji: "🔥",
+      label: "Your spirit",
+      message:
+        "You don't back down. Even when things are hard, even when the odds feel stacked, you find a way through. That kind of quiet resilience? It's extraordinary.",
+      color: "rose",
+    },
+    {
+      emoji: "🎭",
+      label: "Your craziness",
+      message:
+        "The totally unpredictable, endlessly entertaining, keeps-everyone-on-their-toes energy you bring? The world would be genuinely so much more boring without it.",
+      color: "brass",
+    },
+    {
+      emoji: "💫",
+      label: "The little things",
+      message:
+        "The tiny details — the way you laugh, the things that catch your attention, the random observations you make — they're the things that stick. The little things are actually the biggest things.",
+      color: "rose",
+    },
+  ] satisfies AppreciationCard[],
 };
 
 /** Everything the app reads, in one type. */
