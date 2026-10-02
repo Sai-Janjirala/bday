@@ -5,7 +5,7 @@
  * - 3D Flippable Polaroid Prints (tap to flip and read the private note on back)
  * - Washi tape corners with realistic texture & drop shadows
  * - Full-screen Lightbox inspector
- * - Staggered scroll parallax and quotes underneath
+ * - Staggered scroll parallax
  */
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -194,64 +194,6 @@ export default function PhotoGallery() {
             );
           })}
         </div>
-
-        {/* ── Romantic Quotes & Reflections ── */}
-        <motion.div
-          className="mx-auto mt-24 max-w-3xl text-center lg:mt-32"
-          initial={{ opacity: 0, y: reduced ? 0 : 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 1, ease: EASE }}
-        >
-          <span
-            aria-hidden="true"
-            className="mx-auto mb-6 block font-display text-5xl leading-none text-rose/30 italic select-none"
-          >
-            ❦
-          </span>
-
-          <div className="space-y-6">
-            {config.gallery.quotes.map((quote, index) => (
-              <motion.blockquote
-                key={quote}
-                className="font-display text-[clamp(1.45rem,1.1rem+1.6vw,2.3rem)] leading-[1.32] text-balance text-ink-text italic"
-                initial={{ opacity: 0, y: reduced ? 0 : 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.9, delay: index * 0.12, ease: EASE }}
-              >
-                "{quote}"
-              </motion.blockquote>
-            ))}
-          </div>
-
-          <motion.div
-            className="mx-auto mt-12 max-w-xl space-y-4"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 1, delay: 0.4 }}
-          >
-            {config.gallery.lines.map((line) => (
-              <p
-                key={line}
-                className="font-serif text-[1.05rem] leading-7 text-muted sm:text-lg"
-              >
-                {line}
-              </p>
-            ))}
-          </motion.div>
-
-          <motion.p
-            className="mt-8 font-display text-[1.2rem] text-rose-deep italic"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 1, delay: 0.65 }}
-          >
-            {config.gallery.signoff}
-          </motion.p>
-        </motion.div>
       </div>
 
       <Lightbox
