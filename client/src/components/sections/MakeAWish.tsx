@@ -1,24 +1,21 @@
-﻿/**
- * MakeAWish — the ritual, and the one real game in the experience.
+/**
+ * MakeAWish — Chapter IV: The Candle Ritual.
  *
- * Placed on the night background on purpose: a dark room is what makes
- * candlelight read as candlelight. The glow behind the candles is tied
- * to the wish progress, so the light literally grows as the wish takes
- * shape, then drops to embers when it lands.
- *
- * Press and hold to fill the ring — or just tap, and it finishes on its
- * own, which keeps it usable with a keyboard and with a screen reader.
- * Individual candles can also be blown out one at a time for a smaller
- * version of the same payoff.
+ * Placed on the night background: a dark room is what makes candlelight
+ * read as candlelight. Interactive blowout per candle with realistic audio
+ * puff and rising smoke trails, or hold the central ring for a full wish
+ * explosion of golden stardust and celestial petals!
  */
 import { useCallback, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { config } from "../../config/content";
 import { useHoldProgress } from "../../hooks/useHoldProgress";
+import { useChimeSound } from "../../hooks/useChimeSound";
 import SectionShell from "../ui/SectionShell";
 import Flowers from "../ui/Flowers";
 import Petals from "../ui/Petals";
 import Stars from "../ui/Stars";
+import StardustCanvas from "../ui/StardustCanvas";
 
 const CANDLE_COUNT = 5;
 const FILL_MS = 2200;
@@ -42,6 +39,7 @@ export default function MakeAWish() {
   const [wished, setWished] = useState(false);
   const [burst, setBurst] = useState(false);
   const railRef = useRef<HTMLButtonElement>(null);
+  const { playCelestialChime, playCandleBlow, playSoftBell } = useChimeSound();
 
   const litCount = candles.filter((candle) => candle.lit).length;
 
@@ -58,12 +56,12 @@ export default function MakeAWish() {
     });
   }, []);
 
-  // Same hold mechanic as the intro — a quick press completes on its own.
   const landWish = useCallback(() => {
     setWished(true);
     setBurst(true);
     extinguish();
-  }, [extinguish]);
+    playCelestialChime();
+  }, [extinguish, playCelestialChime]);
 
   const { progress, start, reset } = useHoldProgress(landWish, {
     duration: FILL_MS,
@@ -71,10 +69,17 @@ export default function MakeAWish() {
 
   const blowOne = (id: number) => {
     if (wished) return;
+    playCandleBlow();
     extinguish(id);
+    if (litCount <= 1) {
+      setWished(true);
+      setBurst(true);
+      playCelestialChime();
+    }
   };
 
   const relight = () => {
+    playSoftBell(1.2);
     reset();
     setCandles(freshCandles());
     setWished(false);
@@ -82,7 +87,6 @@ export default function MakeAWish() {
     railRef.current?.focus();
   };
 
-  // The light: brightest with every candle lit, warmest at full wish.
   const glow = wished ? 0.35 : 0.45 + progress * 0.55;
   const glowScale = wished ? 0.9 : 1 + progress * 0.12;
 
@@ -95,14 +99,15 @@ export default function MakeAWish() {
       title={config.wish.title}
       lede={config.wish.lede}
       spacing="tall"
-      className="isolate"
+      className="isolate relative"
     >
-      <Petals active={burst} mode="burst" count={40} duration={2200} />
-      <Stars count={50} />
+      <StardustCanvas particleCount={40} glowColor="255, 196, 120" />
+      <Petals active={burst} mode="burst" count={45} duration={2400} />
+      <Stars count={55} />
       <Flowers variant="sprig" tone="night" className="-top-12 -left-12 w-44 opacity-35 sm:w-52" />
       <Flowers variant="cluster" tone="night" className="-right-12 -bottom-12 w-52 opacity-30 sm:w-60" />
 
-      {/* Candlelight spilling onto the page. */}
+      {/* Candlelight spilling onto the page */}
       <div
         aria-hidden="true"
         data-decorative="true"
@@ -118,8 +123,14 @@ export default function MakeAWish() {
       />
 
       <div className="relative z-10 mx-auto flex max-w-2xl flex-col items-center">
-        {/* ── The candles ── */}
-        <div className="mb-2 flex items-end justify-center gap-4 sm:gap-7">
+        {/* Chapter badge */}
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-porcelain/10 px-3 py-1 backdrop-blur-sm">
+          <span className="text-brass-light text-xs">✨</span>
+          <span className="eyebrow text-brass-light/80">{config.wish.chapter}</span>
+        </div>
+
+        {/* ── The 5 Interactive Candles ── */}
+        <div className="mb-4 flex items-end justify-center gap-4 sm:gap-8">
           {candles.map((candle) => (
             <div
               key={candle.id}
@@ -130,18 +141,19 @@ export default function MakeAWish() {
                 {candle.lit && (
                   <motion.span
                     aria-hidden="true"
-                    className="relative mb-1.5 block"
-                    style={{ width: 13, height: 22 }}
+                    className="relative mb-1.5 block cursor-pointer"
+                    style={{ width: 14, height: 24 }}
                     initial={{ opacity: 0, scale: 0.4 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.2, y: -10 }}
+                    exit={{ opacity: 0, scale: 0.2, y: -12 }}
                     transition={{ duration: 0.35 }}
+                    onClick={() => blowOne(candle.id)}
                   >
                     <span
                       className="absolute -inset-3 rounded-full blur-md"
                       style={{
                         background:
-                          "radial-gradient(circle, rgba(255,196,120,0.55) 0%, rgba(255,170,80,0) 70%)",
+                          "radial-gradient(circle, rgba(255,196,120,0.6) 0%, rgba(255,170,80,0) 70%)",
                         animation: reduced ? undefined : "breathe 2.4s ease-in-out infinite",
                       }}
                     />
@@ -160,41 +172,42 @@ export default function MakeAWish() {
                 )}
               </AnimatePresence>
 
-              {/* Smoke, once per candle */}
+              {/* Smoke puff on blowout */}
               <AnimatePresence>
                 {candle.smoking && !candle.lit && (
                   <motion.span
                     aria-hidden="true"
-                    className="pointer-events-none absolute -top-7 left-1/2 h-5 w-2 -translate-x-1/2 rounded-full bg-porcelain/25 blur-[3px]"
+                    className="pointer-events-none absolute -top-8 left-1/2 h-6 w-2.5 -translate-x-1/2 rounded-full bg-porcelain/30 blur-[3px]"
                     initial={{ opacity: 0, y: 0, scale: 0.5 }}
                     animate={{
-                      opacity: [0, 0.55, 0],
-                      y: [0, -14, -30],
-                      scale: [0.5, 1.4, 2.4],
-                      x: [0, 3, -2],
+                      opacity: [0, 0.65, 0],
+                      y: [0, -18, -36],
+                      scale: [0.5, 1.5, 2.6],
+                      x: [0, 4, -3],
                     }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: reduced ? 0.2 : 2, ease: "easeOut" }}
+                    transition={{ duration: reduced ? 0.2 : 2.2, ease: "easeOut" }}
                   />
                 )}
               </AnimatePresence>
 
               {/* Wick */}
-              <span aria-hidden="true" className="-mb-px block h-1.5 w-px bg-porcelain/35" />
+              <span aria-hidden="true" className="-mb-px block h-2 w-px bg-porcelain/40" />
 
-              {/* Candle */}
+              {/* Candle Body */}
               <button
                 type="button"
                 onClick={() => blowOne(candle.id)}
                 disabled={wished || !candle.lit}
                 aria-label={`Blow out candle ${candle.id + 1}`}
-                className="focus-inset block h-12 w-2.5 cursor-pointer rounded-t-[3px] transition-all duration-500 disabled:cursor-default sm:h-14"
+                className="focus-inset block h-14 w-3 cursor-pointer rounded-t-[3px] transition-all duration-500 disabled:cursor-default sm:h-16"
                 style={{
                   background:
                     candle.id % 2 === 0
                       ? "linear-gradient(180deg,#F6E7DC 0%,#E3CDBB 100%)"
                       : "linear-gradient(180deg,#F3DDE4 0%,#DCB7C4 100%)",
-                  boxShadow: "inset -1px 0 2px rgba(43,33,41,0.14), inset 1px 0 1px rgba(255,255,255,0.4)",
+                  boxShadow:
+                    "inset -1px 0 2px rgba(43,33,41,0.18), inset 1px 0 1px rgba(255,255,255,0.45)",
                   transform: candle.lit ? undefined : "scaleY(0.97)",
                   opacity: candle.lit ? 1 : 0.75,
                 }}
@@ -203,14 +216,14 @@ export default function MakeAWish() {
           ))}
         </div>
 
-        {/* Holder */}
+        {/* Brass Candle Holder Bar */}
         <div
           aria-hidden="true"
-          className="h-px w-[15rem] bg-porcelain/20 transition-all duration-1000 sm:w-[19rem]"
-          style={{ opacity: 0.4 + glow * 0.4 }}
+          className="h-1 w-[16rem] rounded-full bg-gradient-to-r from-transparent via-brass-light/40 to-transparent transition-all duration-1000 sm:w-[22rem]"
+          style={{ opacity: 0.5 + glow * 0.4 }}
         />
 
-        {/* ── The control ── */}
+        {/* ── Central Ritual Control ── */}
         <div className="mt-12 flex min-h-[7.5rem] flex-col items-center justify-center">
           <AnimatePresence mode="wait">
             {wished ? (
@@ -225,13 +238,13 @@ export default function MakeAWish() {
                 <p className="font-display text-[clamp(1.75rem,1.4rem+1.6vw,2.5rem)] leading-tight text-porcelain">
                   {config.wish.blown}
                 </p>
-                <p className="mt-4 text-[0.9375rem] leading-relaxed text-pretty text-porcelain/60">
+                <p className="mt-4 text-[0.9375rem] leading-relaxed text-pretty text-porcelain/65">
                   {config.wish.blownBody}
                 </p>
                 <button
                   type="button"
                   onClick={relight}
-                  className="focus-inset mt-7 min-h-11 cursor-pointer rounded-full border border-porcelain/25 px-6 text-[0.6875rem] font-medium tracking-[0.18em] text-porcelain/80 uppercase transition-colors duration-500 hover:border-brass-light/70 hover:text-brass-light"
+                  className="focus-inset mt-7 min-h-11 cursor-pointer rounded-full border border-brass-light/35 bg-porcelain/5 px-7 text-[0.6875rem] font-medium tracking-[0.18em] text-porcelain/90 uppercase transition-all duration-500 hover:border-brass-light hover:bg-porcelain/10 hover:text-brass-light"
                 >
                   {config.wish.again}
                 </button>
@@ -250,7 +263,7 @@ export default function MakeAWish() {
                 }}
                 onContextMenu={(event) => event.preventDefault()}
                 className="focus-inset group relative grid cursor-pointer place-items-center rounded-full"
-                style={{ width: 132, height: 132 }}
+                style={{ width: 140, height: 140 }}
                 aria-label={`${config.wish.holdLabel}. ${Math.round(progress * 100)}% complete.`}
               >
                 {/* Track */}
@@ -269,7 +282,7 @@ export default function MakeAWish() {
                     r="46"
                     fill="none"
                     stroke="var(--color-brass-light)"
-                    strokeWidth="1.5"
+                    strokeWidth="2"
                     strokeLinecap="round"
                     strokeDasharray={2 * Math.PI * 46}
                     strokeDashoffset={2 * Math.PI * 46 * (1 - progress)}
@@ -279,15 +292,15 @@ export default function MakeAWish() {
 
                 {/* Core */}
                 <span
-                  className="grid place-items-center rounded-full border border-porcelain/25 transition-all duration-500 group-hover:border-brass-light/60"
+                  className="grid place-items-center rounded-full border border-porcelain/25 transition-all duration-500 group-hover:border-brass-light/70"
                   style={{
-                    width: 92,
-                    height: 92,
-                    background: `rgba(252,249,245,${0.04 + progress * 0.1})`,
-                    boxShadow: `0 0 ${20 + progress * 46}px rgba(217,195,145,${0.08 + progress * 0.24})`,
+                    width: 98,
+                    height: 98,
+                    background: `rgba(252,249,245,${0.05 + progress * 0.12})`,
+                    boxShadow: `0 0 ${20 + progress * 50}px rgba(217,195,145,${0.1 + progress * 0.3})`,
                   }}
                 >
-                  <span className="px-3 text-center text-[0.625rem] leading-snug font-medium tracking-[0.16em] text-porcelain/75 uppercase">
+                  <span className="px-3 text-center text-[0.625rem] leading-snug font-medium tracking-[0.16em] text-porcelain/85 uppercase">
                     {progress > 0.02 ? config.wish.holdingLabel : config.wish.holdLabel}
                   </span>
                 </span>
@@ -296,16 +309,16 @@ export default function MakeAWish() {
           </AnimatePresence>
         </div>
 
-        {/* ── Hint ── */}
+        {/* Hint text */}
         <AnimatePresence>
           {!wished && (
             <motion.p
-              className="mt-2 text-[0.75rem] tracking-[0.12em] text-porcelain/30 uppercase"
+              className="mt-3 text-[0.75rem] tracking-[0.12em] text-porcelain/40 uppercase"
               initial={{ opacity: 0 }}
               animate={{ opacity: litCount === CANDLE_COUNT ? 1 : 0 }}
               exit={{ opacity: 0 }}
             >
-              Or tap a candle to blow it out
+              {config.wish.tapBlowLabel}
             </motion.p>
           )}
         </AnimatePresence>

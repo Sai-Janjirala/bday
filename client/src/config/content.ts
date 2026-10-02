@@ -1,89 +1,86 @@
 /**
  * ═══════════════════════════════════════════════════════════════
- *  BIRTHDAY KEEPSAKE BOOK — CONTENT
+ *  BIRTHDAY KEEPSAKE BOOK — CONTENT CONFIGURATION
  * ═══════════════════════════════════════════════════════════════
  *
- * This is the single source of truth for everything personal.
- * Every name, photo path, quote, wish line and letter paragraph lives
- * here. Nothing in the UI hard-codes content, so this file is the
- * only thing you need to edit to customize the entire experience.
- *
- * ── Editing notes ───────────────────────────────────────────
- *  · herName / nickname    → who this is for ("Potti")
- *  · timelineMoments       → drop real images into `client/public/photos/`
- *                            using the exact filenames below. Until then,
- *                            each frame renders an elegant placeholder.
- *  · quotes & lines        → change any quotes/lines to your own words.
- *  · letter                → the handwritten letter inside the envelope.
+ * ✏️ HOW TO CUSTOMIZE:
+ * To customize for your special person, simply replace "[Her Name]"
+ * below with her real name (e.g. "Sarah", "Sophia", "Potti", etc.)!
+ * All personal text, memories, letter paragraphs, and quotes live here.
  */
 
 export interface TimelineMoment {
   date: string;
   title: string;
   description: string;
+  backNote: string;
   image: string;
   tag: string;
 }
 
 export const config = {
-  /** Her name — prominently displayed throughout the keepsake. */
-  herName: "Potti",
+  /** 
+   * 🌟 HER NAME — Replace "[Her Name]" with her actual name!
+   */
+  herName: "[Her Name]",
 
-  /** Nickname or pet name. */
-  nickname: "Potti",
+  /** 
+   * 💖 NICKNAME — Replace with her pet name or leave as her name
+   */
+  nickname: "[Her Name]",
 
   // ─────────────────────────────────────────────
-  // THE CURTAIN & ARRIVAL
+  // THE LANDING PAGE & ARRIVAL
   // ─────────────────────────────────────────────
   intro: {
-    firstLine: "Hey, Potti…",
-    secondLine: "A handmade keepsake, bound just for you.",
-    prompt: "Drag up to open the curtain",
+    badge: "A Handmade Keepsake",
+    firstLine: "Hey, [Her Name]…",
+    secondLine: "A bespoke keepsake book, bound just for you.",
+    prompt: "Pull up the golden ribbon or press the seal to open",
     dragHint: "Pull up to open",
+    tapHint: "Tap or hold the wax seal",
     keyboardPrompt: "Press Space, Enter, or ↑ to open",
-    /** Rotating honest status captions while fonts and assets warm up */
+    sealText: "FOR YOU",
+    /** Honest rotating status cues while fonts and photos warm up */
     loadingCues: [
-      "Setting the table…",
-      "Choosing the right words…",
-      "Pressing flowers into pages…",
-      "Lighting the candles…",
+      "Binding the pages with silk thread…",
+      "Pressing blossoms into the margins…",
+      "Lighting the candlelight…",
+      "Preparing your birthday surprise…",
     ],
   },
 
   // ─────────────────────────────────────────────
-  // THE HERO — Keepsake opening
+  // CHAPTER 1 — THE DAY (Hero Opening)
   // ─────────────────────────────────────────────
   hero: {
+    chapter: "Chapter I",
     eyebrow: "A birthday keepsake, bound by hand",
+    titlePrefix: "Happy Birthday,",
     subtitle:
-      "A tribute to the smartest, kindest, and most extraordinary soul. Move across the page — every detail leans in to celebrate you.",
+      "A celebration of the smartest, kindest, and most captivating soul I know. Scroll slowly — every page of this keepsake was handcrafted to celebrate you.",
     scrollCue: "Turn the page ↓",
+    tagline: "Every story is better because you are in it.",
   },
 
   // ─────────────────────────────────────────────
-  // THE GALLERY — The visual star of the middle
+  // CHAPTER 2 — THE GALLERY (Visual Star of the Middle)
   // ─────────────────────────────────────────────
   gallery: {
+    chapter: "Chapter II",
     eyebrow: "Captured in time",
     title: "Pages from our favourite days.",
-    lede: "Every photograph is a pressed leaf between the pages — a doorway back to moments I never want to forget.",
-    hint: "Tap any photograph to inspect the print",
-    /**
-     * Three warm, timeless quotes displayed beneath the photo prints.
-     */
+    lede: "Like pressed flowers kept between antique pages, each memory is a treasure. Tap any print to flip it and read the private note on the back.",
+    hint: "Tap any print to flip or inspect",
     quotes: [
       "In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine.",
-      "The best thing to hold onto in life is each other.",
-      "You make every ordinary moment feel like poetry.",
+      "The best moments in life aren't planned — they are the ones spent laughing with you.",
+      "You make every ordinary second feel like timeless poetry.",
     ],
-    /**
-     * Two quiet, heartfelt lines beneath the quotes.
-     */
     lines: [
-      "Looking at these memories, I am reminded that the sweetest times are simply the ones spent in your presence.",
-      "Decades from now, through every season and twist of fate, these will forever be the days I hold closest to my heart.",
+      "Looking through these photographs, I realize how much brighter the world has felt since the day you entered it.",
+      "Years from now, no matter where life leads us, these will always remain the memories I treasure most.",
     ],
-    /** Signoff beneath the photo collection. */
     signoff: "— with all my love, today and every day after",
     closeLabel: "Close",
     prevLabel: "Previous photo",
@@ -91,53 +88,73 @@ export const config = {
   },
 
   // ─────────────────────────────────────────────
-  // THE WISH — The candlelit ritual
+  // CHAPTER 3 — THE GOLDEN SCRATCH CARD (Secret Memory)
   // ─────────────────────────────────────────────
-  wish: {
-    eyebrow: "A ritual for the year ahead",
-    title: "Make a wish.\nBlow out the candles.",
-    lede: "Hold the flame until the circle closes — or blow out each candle one by one.",
-    holdLabel: "Hold to send your wish",
-    holdingLabel: "Holding your wish…",
-    blown: "May every quiet wish come true.",
-    blownBody:
-      "Your wish is out in the stars now. May this upcoming year bring you boundless happiness, peace of mind, unshakeable confidence, and all the quiet dreams you keep in your heart.",
-    again: "Light them again",
+  secret: {
+    chapter: "Chapter III",
+    eyebrow: "A secret postscript",
+    title: "Something hidden in gold.",
+    lede: "Use your finger or mouse to scratch away the shimmering gold foil and reveal a private message.",
+    revealHint: "Rub with your cursor or finger to scratch",
+    secretNote:
+      "If I could give you one gift this year, it would be the ability to see yourself through my eyes — so you would finally understand how truly brilliant, radiant, and deeply cherished you are every single day.",
+    badge: "Certified Keepsake",
+    revealedTitle: "Kept in ink & heart",
   },
 
   // ─────────────────────────────────────────────
-  // THE LETTER — The envelope & handwritten note
+  // CHAPTER 4 — THE WISH (Interactive Candle Ritual)
+  // ─────────────────────────────────────────────
+  wish: {
+    chapter: "Chapter IV",
+    eyebrow: "A ritual for the year ahead",
+    title: "Make a wish.\nBlow out the candles.",
+    lede: "Hold the flame until the starlight circle fills — or blow out each candle one by one with a tap.",
+    holdLabel: "Hold to send your wish",
+    holdingLabel: "Holding your wish in the stars…",
+    tapBlowLabel: "Tap any candle to blow it out",
+    blown: "May every quiet wish come true.",
+    blownBody:
+      "Your wish has been whispered to the night sky. May this new year bring you unshakeable peace, triumphant victories, genuine happiness, and all the quiet dreams you keep close to your heart.",
+    again: "Light them once more",
+  },
+
+  // ─────────────────────────────────────────────
+  // CHAPTER 5 — THE LETTER (Unfolding Envelope)
   // ─────────────────────────────────────────────
   letterSection: {
+    chapter: "Chapter V",
     eyebrow: "Words kept in ink",
-    title: "A letter for your birthday.",
-    lede: "Folded carefully, sealed with wax, and written solely for you.",
-    sealedFor: "For",
+    title: "A handwritten letter for you.",
+    lede: "Folded carefully into antique paper and sealed with wax. Tap to break the seal and unfold.",
+    sealedFor: "Handcrafted for",
     openLabel: "Break the seal & unfold",
     reseal: "Fold the letter back up",
   },
 
   letter: {
-    salutation: "Dearest Potti,",
+    salutation: "Dearest [Her Name],",
     bodyParagraphs: [
-      "Another year wiser, bolder, and more luminous. Taking a moment to look back at everything you are and everything you have navigated this past year fills me with immense admiration.",
-      "You possess a rare brilliance — a sharp, curious intellect paired with a genuinely kind, empathetic heart. Whether you are tackling ambitious challenges or sharing late-night laughter, your presence brings warmth, clarity, and infectious energy to everyone around you.",
-      "As you turn this page and step into your next chapter, my wish for you is boundless joy. I hope this year rewards your hard work, surrounds you with deep peace, and brings you adventures that make your soul smile.",
-      "I am deeply proud of who you are, tremendously lucky to know you, and always standing in your corner cheering you on through every triumph.",
+      "Another year wiser, bolder, and more extraordinarily radiant. Taking a quiet moment to reflect on who you are and all you have navigated over this past year fills me with immense admiration.",
+      "You carry yourself with a rare combination of grit, sharp intellect, and graceful warmth. Whether you are chasing down ambitious goals or sharing late-night laughter, your presence brings clarity, comfort, and undeniable light to everyone around you.",
+      "As you turn this page and step into your next chapter, my wish for you is simple: I hope this year rewards your hard work with peace of mind, surrounds you with people who uplift you, and brings you countless reasons to smile until your cheeks hurt.",
+      "I am tremendously proud of who you are, deeply lucky to share life's moments with you, and always in your corner cheering you on through every triumph and every dream.",
     ],
     signoff: "Always cheering for you & holding you dear,",
     signature: "With all my love & respect",
   },
 
   // ─────────────────────────────────────────────
-  // THE FINALE — Closing celebration
+  // CHAPTER 6 — THE FINALE (Celebration)
   // ─────────────────────────────────────────────
   finale: {
+    chapter: "The Epilogue",
     eyebrow: "The final page, for now",
     title: "Happy Birthday,",
     closing:
       "Thank you for being the sweetest melody in every memory and the brightest light in every room. Here is to celebrating you today, tomorrow, and across every chapter yet to come.",
     replay: "Return to the beginning",
+    heartsPrompt: "Tap anywhere to send up a bloom of celestial starlight",
   },
 
   // ─────────────────────────────────────────────
@@ -145,34 +162,42 @@ export const config = {
   // ─────────────────────────────────────────────
   timelineMoments: [
     {
-      date: "Our first hello",
+      date: "The First Hello",
       title: "Where the story began",
       description:
-        "The very moment our paths crossed — witty, brilliant, and completely unforgettable from day one.",
+        "The very first conversation — witty, unforgettable, and an instant spark that changed everything.",
+      backNote:
+        "I still remember the first thing you said. I knew right then and there that you were someone extraordinarily rare.",
       image: "/photos/how-we-met.jpg",
       tag: "Chapter I",
     },
     {
-      date: "Unfiltered laughter",
+      date: "Unfiltered Laughter",
       title: "Adventures & quiet drives",
       description:
-        "Singing along off-key, taking scenic detours, and finding pure comfort in just being together.",
+        "Singing along to our favorite songs off-key and discovering that anywhere with you is an adventure.",
+      backNote:
+        "Lost on backroads, talking about everything and nothing. That day was the easiest, happiest memory.",
       image: "/photos/first-date.jpg",
       tag: "Chapter II",
     },
     {
-      date: "Pure pride",
+      date: "Pure Pride",
       title: "Watching you conquer",
       description:
-        "Seeing your drive, your sharp intellect, and the graceful strength you bring to everything you set your mind to.",
+        "Seeing your dedication, your sharp mind, and the effortless grace you bring to every challenge you tackle.",
+      backNote:
+        "Nobody works harder or cares deeper than you do. Watching you succeed is one of my greatest joys.",
       image: "/photos/when-i-knew.jpg",
       tag: "Chapter III",
     },
     {
-      date: "Today & tomorrow",
+      date: "Today & Tomorrow",
       title: "The pages ahead",
       description:
-        "Celebrating the wonderful person you are today, and eagerly anticipating all the magic the next year holds for you.",
+        "Celebrating the extraordinary person you are today, and eagerly anticipating all the magic the coming year holds.",
+      backNote:
+        "The best chapter of your life is the one we are writing right now. Happy Birthday, my favorite person.",
       image: "/photos/today.jpg",
       tag: "Chapter IV",
     },

@@ -1,30 +1,31 @@
 /**
- * PhotoGallery — The visual star of the middle.
+ * PhotoGallery — Chapter II: The Keepsake Album & Scrapbook.
  *
- * Keepsake scrapbook presentation: larger staggered photo prints with
- * realistic washi-tape corners, generous captions, full lightbox preview,
- * and warm personal quotes & reflections below.
+ * Interactive features:
+ * - 3D Flippable Polaroid Prints (tap to flip and read the private note on back)
+ * - Washi tape corners with realistic texture & drop shadows
+ * - Full-screen Lightbox inspector
+ * - Staggered scroll parallax and quotes underneath
  */
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { config } from "../../config/content";
+import { config, type TimelineMoment } from "../../config/content";
+import { useChimeSound } from "../../hooks/useChimeSound";
 import SectionShell from "../ui/SectionShell";
 import PhotoPlaceholder from "../ui/PhotoPlaceholder";
 import Lightbox from "../ui/Lightbox";
 import Flowers from "../ui/Flowers";
 
-/** Staggered offsets for the 4 prints to read as a curated keepsake album. */
 const PLACEMENT: Array<{
   cols: string;
   aspect: string;
   shift: string;
   rotate: number;
-  tape: "top-left-bottom-right" | "top-right-bottom-left" | "top-both" | "corners";
 }> = [
-  { cols: "lg:col-span-6 lg:col-start-1", aspect: "4 / 5", shift: "lg:mt-4", rotate: -1.5, tape: "top-left-bottom-right" },
-  { cols: "lg:col-span-5 lg:col-start-8", aspect: "3 / 4", shift: "lg:mt-16", rotate: 2.0, tape: "top-right-bottom-left" },
-  { cols: "lg:col-span-5 lg:col-start-1", aspect: "3 / 4", shift: "lg:mt-12 lg:ml-6", rotate: 1.6, tape: "top-right-bottom-left" },
-  { cols: "lg:col-span-6 lg:col-start-7", aspect: "4 / 5", shift: "lg:-mt-6", rotate: -1.8, tape: "top-left-bottom-right" },
+  { cols: "lg:col-span-6 lg:col-start-1", aspect: "4 / 5", shift: "lg:mt-4", rotate: -1.8 },
+  { cols: "lg:col-span-5 lg:col-start-8", aspect: "3 / 4", shift: "lg:mt-16", rotate: 2.2 },
+  { cols: "lg:col-span-5 lg:col-start-1", aspect: "3 / 4", shift: "lg:mt-14 lg:ml-6", rotate: 1.5 },
+  { cols: "lg:col-span-6 lg:col-start-7", aspect: "4 / 5", shift: "lg:-mt-6", rotate: -2.0 },
 ];
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -33,8 +34,15 @@ const PHOTO_COUNT = Math.min(4, config.timelineMoments.length);
 export default function PhotoGallery() {
   const reduced = useReducedMotion();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [flippedCards, setFlippedCards] = useState<Record<number, boolean>>({});
+  const { playSoftBell } = useChimeSound();
 
   const shown = config.timelineMoments.slice(0, PHOTO_COUNT);
+
+  const toggleFlip = (index: number) => {
+    playSoftBell(1.1);
+    setFlippedCards((prev) => ({ ...prev, [index]: !prev[index] }));
+  };
 
   return (
     <SectionShell
@@ -49,72 +57,145 @@ export default function PhotoGallery() {
       <Flowers variant="cluster" className="-right-8 -bottom-6 w-52 opacity-60 sm:w-64" />
       <Flowers variant="sprig" className="-left-6 top-16 w-40 opacity-45 sm:w-48" />
 
-      <div className="mt-8 lg:mt-14">
-        {/* ── Staggered Album Prints Grid ── */}
-        <div className="grid grid-cols-1 items-start gap-8 sm:grid-cols-2 lg:grid-cols-12 lg:gap-10">
+      {/* Chapter header note */}
+      <div className="mb-6 flex items-center justify-between border-b border-ink-text/10 pb-4">
+        <div className="flex items-center gap-2">
+          <span className="rounded-full bg-rose/10 px-2.5 py-0.5 text-[0.625rem] font-medium tracking-[0.2em] text-rose-deep uppercase">
+            {config.gallery.chapter}
+          </span>
+          <span className="text-[0.8125rem] text-muted-light italic">
+            Tap a print to flip & read handwritten notes
+          </span>
+        </div>
+        <span className="eyebrow hidden text-rose-deep sm:inline-block">
+          {PHOTO_COUNT} Keepsake Prints
+        </span>
+      </div>
+
+      <div className="mt-8 lg:mt-12">
+        {/* ── 3D Flippable Polaroid Album Grid ── */}
+        <div className="grid grid-cols-1 items-start gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-12">
           {shown.map((moment, index) => {
             const place = PLACEMENT[index % PLACEMENT.length];
+            const isFlipped = !!flippedCards[index];
+
             return (
-              <motion.button
+              <div
                 key={moment.image}
-                type="button"
-                onClick={() => setLightboxIndex(index)}
-                aria-label={`Open photograph ${index + 1}: ${moment.title}`}
-                className={`focus-inset group relative cursor-pointer text-left ${place.cols} ${place.shift}`}
-                initial={{ opacity: 0, y: reduced ? 0 : 36, rotate: reduced ? 0 : place.rotate + 2 }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                  rotate: reduced ? 0 : place.rotate,
-                }}
-                viewport={{ once: true, amount: 0.25 }}
-                transition={{
-                  duration: 1,
-                  delay: (index % 2) * 0.15,
-                  ease: EASE,
-                }}
-                whileHover={reduced ? undefined : { rotate: 0, y: -8, scale: 1.025 }}
+                className={`relative ${place.cols} ${place.shift}`}
+                style={{ perspective: 1200 }}
               >
-                {/* Physical Print Mount with White Paper Border */}
-                <div className="relative rounded-[3px] bg-[#fbf9f5] p-3 pb-5 shadow-[0_12px_30px_-10px_rgba(43,33,41,0.22),0_2px_4px_rgba(0,0,0,0.05)] ring-1 ring-black/5 transition-shadow duration-500 group-hover:shadow-[0_20px_40px_-12px_rgba(43,33,41,0.32)]">
-                  {/* Tape Corners on the print */}
+                <motion.div
+                  className="relative cursor-pointer transition-transform duration-300"
+                  initial={{ opacity: 0, y: reduced ? 0 : 36, rotate: reduced ? 0 : place.rotate }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                    rotate: reduced ? 0 : place.rotate,
+                  }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ duration: 1, delay: (index % 2) * 0.15, ease: EASE }}
+                  whileHover={reduced ? undefined : { y: -8, scale: 1.025 }}
+                >
+                  {/* Washi Tape Corners */}
                   <TapeCorner position="top-left" />
                   <TapeCorner position="top-right" />
 
-                  {/* Photo Frame */}
-                  <div className="zoom-frame relative overflow-hidden rounded-[2px]">
-                    <PhotoPlaceholder
-                      src={moment.image}
-                      alt={moment.title}
-                      aspectRatio={place.aspect}
-                      eager={index < 2}
-                      style={{ borderRadius: 2 }}
-                    />
-                    {/* Chapter Tag Ribbon */}
-                    <span className="pointer-events-none absolute top-3 left-3 rounded-full bg-porcelain/90 px-3 py-1 text-[0.625rem] font-medium tracking-[0.2em] text-ink-text/80 uppercase shadow-sm backdrop-blur-sm">
-                      {moment.tag}
-                    </span>
-                  </div>
+                  {/* 3D Card Container */}
+                  <div
+                    onClick={() => toggleFlip(index)}
+                    className="relative w-full rounded-[4px] transition-transform duration-700"
+                    style={{
+                      transformStyle: "preserve-3d",
+                      transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+                    }}
+                  >
+                    {/* ── FRONT FACE: Photograph & Polaroid Frame ── */}
+                    <div
+                      className="rounded-[4px] bg-[#fdfbf7] p-3.5 pb-6 shadow-[0_14px_34px_-10px_rgba(43,33,41,0.22),0_2px_6px_rgba(0,0,0,0.06)] ring-1 ring-black/5"
+                      style={{ backfaceVisibility: "hidden" }}
+                    >
+                      {/* Photo Frame */}
+                      <div className="zoom-frame relative overflow-hidden rounded-[2px]">
+                        <PhotoPlaceholder
+                          src={moment.image}
+                          alt={moment.title}
+                          aspectRatio={place.aspect}
+                          eager={index < 2}
+                          style={{ borderRadius: 2 }}
+                        />
+                        {/* Chapter Ribbon Tag */}
+                        <span className="pointer-events-none absolute top-3 left-3 rounded-full bg-porcelain/90 px-3 py-1 text-[0.625rem] font-medium tracking-[0.2em] text-ink-text/80 uppercase shadow-sm backdrop-blur-sm">
+                          {moment.tag}
+                        </span>
+                      </div>
 
-                  {/* Caption on the Polaroid-style bottom border */}
-                  <div className="mt-3.5 px-1">
-                    <div className="flex items-baseline justify-between gap-2">
-                      <p className="font-display text-[1.25rem] leading-snug font-medium text-ink-text">
-                        {moment.title}
-                      </p>
-                      <p className="eyebrow text-rose whitespace-nowrap">{moment.date}</p>
+                      {/* Caption on the bottom border */}
+                      <div className="mt-4 px-1">
+                        <div className="flex items-baseline justify-between gap-2">
+                          <p className="font-display text-[1.25rem] leading-snug font-medium text-ink-text">
+                            {moment.title}
+                          </p>
+                          <p className="eyebrow text-rose whitespace-nowrap">{moment.date}</p>
+                        </div>
+                        <p className="mt-1.5 text-[0.875rem] leading-relaxed text-muted line-clamp-2">
+                          {moment.description}
+                        </p>
+
+                        {/* Interactive Buttons Bar */}
+                        <div className="mt-3.5 flex items-center justify-between border-t border-ink-text/10 pt-2.5 text-[0.6875rem]">
+                          <span className="font-medium text-rose hover:underline">
+                            ↺ Tap to flip note
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setLightboxIndex(index);
+                            }}
+                            className="font-medium text-muted hover:text-ink-text"
+                          >
+                            Inspect 🔍
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <p className="mt-1.5 text-[0.875rem] leading-relaxed text-muted line-clamp-2">
-                      {moment.description}
-                    </p>
+
+                    {/* ── BACK FACE: Vintage Handwritten Note ── */}
+                    <div
+                      className="absolute inset-0 flex flex-col justify-between rounded-[4px] border border-amber-900/10 bg-[#faf4ea] p-6 shadow-xl"
+                      style={{
+                        backfaceVisibility: "hidden",
+                        transform: "rotateY(180deg)",
+                        backgroundImage:
+                          "repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(169, 138, 86, 0.12) 28px)",
+                      }}
+                    >
+                      <div>
+                        <div className="flex items-center justify-between border-b border-amber-900/15 pb-2">
+                          <span className="eyebrow text-amber-900/60">Keepsake Memory</span>
+                          <span className="text-xs font-serif text-amber-900/60">
+                            {moment.date}
+                          </span>
+                        </div>
+                        <p className="hand mt-6 text-xl leading-relaxed text-[#4a2e38]">
+                          "{moment.backNote}"
+                        </p>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-4 text-[0.6875rem] text-muted-light">
+                        <span>↺ Tap to flip back</span>
+                        <span className="text-rose font-script text-base">Always & forever</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </motion.button>
+                </motion.div>
+              </div>
             );
           })}
         </div>
 
-        {/* ── Personal Reflections & Warm Quotes ── */}
+        {/* ── Romantic Quotes & Reflections ── */}
         <motion.div
           className="mx-auto mt-24 max-w-3xl text-center lg:mt-32"
           initial={{ opacity: 0, y: reduced ? 0 : 20 }}
@@ -122,7 +203,6 @@ export default function PhotoGallery() {
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 1, ease: EASE }}
         >
-          {/* Decorative Pressed Leaf / Flourish */}
           <span
             aria-hidden="true"
             className="mx-auto mb-6 block font-display text-5xl leading-none text-rose/30 italic select-none"
@@ -171,14 +251,6 @@ export default function PhotoGallery() {
           >
             {config.gallery.signoff}
           </motion.p>
-
-          <div className="mt-12 flex items-center justify-center gap-4">
-            <span className="h-px w-12 bg-rose/30" />
-            <p className="eyebrow text-muted-light">
-              {config.gallery.hint} · {PHOTO_COUNT} Photographs
-            </p>
-            <span className="h-px w-12 bg-rose/30" />
-          </div>
         </motion.div>
       </div>
 
@@ -202,7 +274,6 @@ export default function PhotoGallery() {
   );
 }
 
-/** Realistic washi tape strip mounted on the corners of prints */
 function TapeCorner({ position }: { position: "top-left" | "top-right" }) {
   const isLeft = position === "top-left";
   return (
